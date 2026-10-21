@@ -1,0 +1,172 @@
+% package
+\usepackage{alltt}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{caption}
+\usepackage{color}
+\usepackage[colorlinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{mathdots}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{pdflscape}
+\usepackage{pgffor}
+\usepackage{pgfplots}
+\usepackage{siunitx}
+\usepackage{slashed}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{tkz-euclide}
+\usepackage[normalem]{ulem}
+\usepackage{xcolor}
+\usepackage{xparse}
+\usepackage{xpatch}
+\usepackage[all]{xy}
+\usepackage{imakeidx}
+
+% layout
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\lhead{\emph{\nouppercase{\leftmark}}}
+\setlength{\headheight}{14.5pt}
+
+% title
+\author{ioshift}
+\date{\today}
+\title{\Huge{\bf{\ntitle}}}
+
+% Others
+\pgfplotsset{compat=1.18}
+\setlength{\parindent}{0em}
+\setlength{\tabcolsep}{0pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% math %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Theorems
+\theoremstyle{definition}
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{axiom}[thm]{Axiom}
+\newtheorem{conjecture}[thm]{Conjecture}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{eg}[thm]{Example}
+\newtheorem{lemma}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+
+\newtheorem*{question}{Question}
+\newtheorem*{aim}{Aim}
+\newtheorem*{assumption}{Assumption}
+\newtheorem*{claim}{Claim}
+\newtheorem*{ex}{Exercise}
+\newtheorem*{fact}{Fact}
+\newtheorem*{law}{Law}
+\newtheorem*{remark}{Remark}
+\newtheorem*{rrule}{Rule}
+\newtheorem*{warning}{Warning}
+
+\newenvironment{solution}{\begin{proof}[Solution]}{\end{proof}}
+
+% Special sets
+\newcommand{\C}{\mathbf{C}}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\Q}{\mathbf{Q}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\N}{\mathbf{N}}
+\newcommand{\F}{\mathbf{F}}
+
+% Symbols
+\newcommand{\noteq}{\not=}
+\newcommand{\re}{\mathrm{Re\,}}
+\newcommand{\im}{\mathrm{Im\,}}
+\newcommand{\poly}[1]{\mathcal{P}(#1)}
+\newcommand{\comp}[1]{#1^{\perp}}
+\newcommand{\abs}[1]{\left\lvert #1\right\rvert}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\floor}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1\right\rceil}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\limit}[2]{\lim\limits_{#1\to #2}}
+\newcommand{\bmap}[1]{\mathcal{B}(#1)} 
+\newcommand{\lmap}[1]{\mathcal{L}(#1)}
+\newcommand{\lmat}[1]{\mathcal{M}(#1)}
+\newcommand{\iprod}[1]{\langle#1\rangle}
+\newcommand{\by}[2]{$#1$-by-$#2$}
+\newcommand{\trans}[1]{#1^\mathrm{t}}
+\newcommand{\bil}[1]{#1^{(2)}}
+\newcommand{\symbil}[1]{#1^{(2)}_{\mathrm{sym}}}
+\newcommand{\altbil}[1]{#1^{(2)}_{\mathrm{alt}}}
+\newcommand{\altmul}[2]{#1^{(#2)}_{\mathrm{alt}}}
+\renewcommand{\span}{\operatorname{span}}
+\renewcommand{\d}{\mathop{}\!\mathrm{d}} 
+\renewcommand{\vec}[1]{\boldsymbol{\mathbf{#1}}}
+\renewcommand{\emptyset}{\varnothing}
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Null}{null\,}
+\DeclareMathOperator{\range}{range\,}
+\DeclareMathOperator{\volume}{volume\,}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\perm}{perm}
+\DeclareMathOperator{\sign}{sign}
+
+%%% Automaic Definition Glossary
+\newtheorem{definition}[thm]{Definition}
+\newtheorem{notations}[thm]{Notation}
+\newcounter{cnt}
+\newcommand{\newterm}[3]{%
+    \global\expandafter\unexpanded\expandafter{
+    \expandafter\gdef\csname term#1\endcsname}{#2}%
+    \global\expandafter\unexpanded\expandafter{
+    \expandafter\gdef\csname cat#1\endcsname}{#3}%
+}
+\newenvironment{defi}[1]{
+    \refstepcounter{cnt}\label{\thecnt}
+    \newterm{\arabic{cnt}}{#1}{0}
+    \begin{definition}\textbf{#1}
+    
+}{\end{definition}}
+\newenvironment{notation}[1]{
+    \refstepcounter{cnt}\label{\thecnt}
+    \newterm{\arabic{cnt}}{#1}{0}
+    \begin{notations}\textbf{#1}
+    
+}{\end{notations}}
+\newcommand{\addelement}[1]{
+    \refstepcounter{cnt}\label{\thecnt}%
+    \newterm{\arabic{cnt}}{#1}{0}%
+}
+\newcommand{\addclass}[1]{
+    \refstepcounter{cnt}\label{\thecnt}%
+    \newterm{\arabic{cnt}}{#1}{1}%
+}
+% \let\oldsection\section
+% \renewcommand{\section}[1]{
+%   \oldsection{#1}\addclass{#1}
+% }
+% \titleformat{\section}{\normalfont\Large\bfseries}{}{0pt}{\thesection\quad}
+\newcommand{\printglossary}{
+    \newpage
+    \section{Glossary}
+    \foreach \x in {1,...,\arabic{cnt}} {
+        \ifnum\csname cat\x\endcsname=0
+            \hyperref[\x]{\csname term\x\endcsname}\par\addvspace{0.5em}
+        \else
+            \ifnum\x>1
+                \vspace{1em}
+            \fi
+            {\large\textbf{\csname term\x\endcsname}\par\addvspace{0.7em}}
+        \fi
+    }
+}

@@ -1,0 +1,3769 @@
+\documentclass[12pt,a4paper]{article}
+\def\ntitle{Linear Algebra Done Right}
+
+\input{head}
+
+\begin{document}
+    \pagenumbering{Roman}
+    \maketitle
+    \newpage
+    \tableofcontents    
+    \newpage
+    \pagenumbering{arabic}
+    \section{Vector Space}\addclass{Vector Space}
+    \subsection{Definition of Vector Space}
+    \begin{notation}{$\F,V,W$}
+        In this note, we use $\F$ to denote $\R$ or $\C$ and use $V$ and $W$ to denote vector spaces over $\F$.
+    \end{notation}
+    \hfill
+    \begin{defi}{Vector Space}
+        A vector space is a set $V$ over a field $\F$ along with two binary operators $+,\cdot$, satisfying the following properties.
+        \begin{enumerate}
+            \item \textbf{Closed} under addition and scalar multiplication
+            \item \textbf{Commutativity} of addition
+            \item \textbf{Associativity} of addition
+            \item \textbf{Associativity} of multiplication
+            $$(ab)v=a(bv)
+            \text{ for all }a,b\in\F\text{ and all }v\in V$$
+            \item Existance of additive and multiplicative \textbf{identity}
+            \item Existance of additive \textbf{inverse}
+            \item \textbf{Distributivity} of vector sums
+            $$a(u+v)=au+av\text{ for all }a\in\F \text{ and all }u,v\in V$$
+            \item \textbf{Distributivity} of scalar sums
+            $$(a+b)v=av+bv\text{ for all }a,b\in\F \text{ and all }v\in V$$
+        \end{enumerate}
+    \end{defi}
+    \begin{remark}
+        Two binary operations are defined to be $+:V\times V\to V$ and $\cdot:\F\times V\to V$, which contains the precondition of closure, i.e. the first property.
+    \end{remark}
+    \hfill
+    \begin{notation}{$\F^S$}\label{1.3}
+        If $S$ is a set, then $\F^S$ denotes $\set{f\mid f:S\to \F}$
+    \end{notation}
+    \begin{remark}
+        If $S$ is a nonempty set, then $\F^S$ is a vector space over $\F$
+    \end{remark}
+    \hfill
+    
+    \subsection{Subspaces}
+    \begin{defi}{Subspace}
+        A subset $U$ of $V$ is called subspace of $V$ if U is also a vector space under the same addition and multiplication.
+    \end{defi}
+    \begin{remark}
+        A subset $U$ of $V$ is a subspace iff $U$ satisfies the following conditions:
+        \begin{enumerate}
+            \item Existance of additive \textbf{identity}
+            \item \textbf{Closed} under addition and scalar multiplication
+        \end{enumerate}
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Sum of Subsets}
+        Suppose $U_1,\cdots,U_m$ are subsets of V. Then the sum of $U_1,\dots,U_m$, denoted $U_1+\cdots+U_m$, is defined as
+        $$
+        U_1+\cdots+U_m=\set{u_1+\cdots+u_m:u_1\in U_1,\dots,u_m\in U_m}
+        $$
+    \end{defi}
+    \begin{remark}
+        Kind of like \textbf{convolution}.
+    \end{remark}
+    \hfill
+    
+    \begin{prop}\label{1.6}
+        Suppose $U_1,\dots,U_m$ are subspaces of $V$. Then $U_1+\cdots+U_m$ is the smallest subspaces of $V$ containing $U_1,\dots,U_m$ (meaning other subspaces containing $U_1,\dots,U_m$ also contains $U_1+\cdots+U_m$).
+    \end{prop}
+    \hfill
+
+    \subsection{Direct Sums}
+    \begin{defi}{Direct Sum}
+        Suppose $U_1,\dots,U_m$ are subspaces of $V$. Then the sum $U_1+\cdots+U_m$ is called a direct sum iff any element in $U_1+\cdots+U_m$ can be written in only one way as a sum $u_1+\cdots+u_m$, where $u_i\in U_i$.
+    \end{defi}
+    \begin{notation}{$U_1\oplus U_2$}
+        We use $U_1\oplus\cdots\oplus U_m$ to denote that $U_1+\cdots+U_m$ is a direct sum. 
+    \end{notation}
+    \hfill
+
+    \begin{prop}
+        Suppose $U_1,\dots,U_m$ are subspaces of $V$. Then $U_1+\cdots+U_m$ is a direct sum iff there's only one way to write $0$ as a sum $u_1+\cdots+u_m$.
+    \end{prop}
+    \begin{remark}
+        The only way is by taking each of $u_1,\dots,u_m$ equal to $0$. 
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $U$ and $W$ are subspaces of $V$. Then $U+W$ is a direct sum iff $U\cap W=\set{0}$.
+    \end{prop}
+    \hfill
+
+    \section{Finite-Dimensional Vector Spaces}\addclass{Finite-Dimensional Vector Spaces}
+    \subsection{Span and Linear Independence}
+    \begin{defi}{Span}
+        $$\operatorname{span}(v_1,\dots,v_m)=\set{a_1v_1+\cdots+a_mv_m\mid a_1,\dots,a_m\in\F}$$
+        $$\operatorname{span}()=\set{0}$$
+    \end{defi}
+    \begin{remark}
+        Span is the collection of linear combinations.
+    \end{remark}
+    \hfill
+    
+    \begin{prop}
+        The span of a list of vectors in $V$ is the smallest subspace of $V$ containing all the vectors in the list.
+    \end{prop}
+    \begin{remark}
+        Compared with \hyperref[1.6]{Proposition 1.6}.
+    \end{remark}
+    \hfill
+    
+    \begin{defi}{Spans}
+        If $\span(v_1,\dots,v_m)$ equals $V$, we say that $v_1,\dots,v_m$ spans $V$.
+    \end{defi}
+    \hfill
+
+    \begin{defi}{Finite \& Infinite-dimensional vector space}\label{2.4}
+        A vector space is called finite-dimensional iff some list of vectors in it spans the space.
+
+        A vector space is called infinite-dimensional if it is not finite-dimensional.
+    \end{defi}
+    \hfill
+
+    \begin{notation}{$\mathcal{P}(\F)$}
+        We use $\mathcal{P}(\F)$ to represent the set of all polynomials with coefficients in $\F$, i.e.
+        $$\mathcal{P}(\F)=\set{p:\F\to\F\mid p(z)=a_0+a_1z+a_2z^2+\cdots+a_mz^m,a_0,\dots,a_m\in\F}$$
+    \end{notation}
+    \begin{remark}
+        We can regard $p(z)$ as a list of $m+1$ vectors.
+    \end{remark}
+    \begin{remark}
+        Note that $\mathcal{P}(\F)$ is a subspace of $\F^\F$, as defined in \hyperref[1.3]{Notation 1.3}.
+    \end{remark}
+    \begin{remark}
+        Also note that $\mathcal{P}(\F)$ is infinite-dimensional. 
+    \end{remark}
+    \hfill
+
+    \begin{notation}{$\deg p$}
+        For a polynomial $p\in\mathcal{P}(\F)$, we say $\deg p=m$ if $$p(z)=a_0+a_1z+a_2z^2+\cdots+a_mz^m$$ for all $z\in\F$ and $a_m\not=0$.
+
+        For $p(z)=0$, we define $\deg p=-\infty$.
+    \end{notation}
+    \hfill
+
+    \begin{notation}{$\mathcal{P}_m(\F)$}
+        For $m\in\N$, $\mathcal{P}_m(\F)$ denotes the set of all polynomials with coefficients in $\F$ and degree at most $m$.
+    \end{notation}
+    \begin{remark}
+        Note that $\mathcal{P}_m(\F)$ is finite-dimensional.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Linearly Independent \& Dependent}
+        A list $v_1,\dots,v_m$ of vectors in $V$ is called linearly independent iff 
+        $$
+        a_1v_1+\cdots+a_mv_m=0\iff a_1=a_2=\cdots=a_m=0
+        $$
+        
+        We also define the empty list $()$ to be linearly independent.
+        \vspace{1em}
+        
+        A list is linearly dependent iff it's not linearly independent.
+    \end{defi}
+    \begin{remark}
+        If $v_1,\dots,v_m$ is linearly independent, then each vector in $\span(v_1,\dots,v_m)$ has only one representation as a linear combination of $v_1,\dots,v_m$.
+    \end{remark}
+    \hfill
+
+    \begin{eg}
+        Special Case
+        
+        \begin{itemize}
+            \item A list $v$ is linearly independent iff $v\noteq0$.
+            \item A list $v_1,v_2$ is linearly independent iff $\nexists a\in\F,v_1=av_2$.
+            \item The list $1,z,\dots,z^m$ is linearly independent in $\mathcal{P}(\F)$ for all $m\in\N$.
+            \item Removing any element in a list doesn't change its linearly independency.\\
+
+            \item If some vector in a list of vectors in $V$ is a linear combination of the other vectors, then the list is linearly dependent.
+            \item Every list containing the $0$ vector is linearly dependent.
+        \end{itemize}
+    \end{eg}
+    \hfill
+    
+    \begin{lemma}\label{2.10}
+    Suppose $v_1,\dots,v_m$ is a linearly dependent list in $V$, then there exists $j\in[1,m]$ such that:
+    \begin{enumerate}
+        \item $v_j\in\span(v_1,\dots,v_{j-1})$
+        \item If the $j^\text{th}$ term is removed from $v_1,\dots,v_m$, the span of the remaining list equals $\span(v_1,\dots,v_m)$
+    \end{enumerate}
+    \end{lemma}
+    \begin{remark}
+        This lemma is really useful in constructing and judging linearly independent list.
+    \end{remark}
+    \hfill
+
+    \begin{thm}\label{2.11}
+        In a finite-dimensional vector space $V$, if a list of vectors $v_1,\dots,v_m$ are linearly independent, and another list of vectors $u_1,\dots,u_n$ spans $V$, then $m\leq n$.
+    \end{thm}
+    \begin{remark}
+        The smallest list which spans a finite-dimensional vector space is linearly independent. And that list is the biggest list that is linearly independent.
+    \end{remark}
+    \hfill
+
+    \begin{thm}\label{2.12}
+        Every subspace of a finite-dimensional vector space is finite-dimensional.
+    \end{thm}
+    \hfill
+
+    % TBD
+    \begin{question} 
+        Suppose $v_1,\dots,v_m$ is linearly independent in $V$, and each of them can be uniquely represented as linear combinations of $u_1,\dots,u_n$. Then, $u_1,\dots,u_n$ is linearly independent? 
+    \end{question}
+
+    \subsection{Bases}
+    \begin{defi}{Basis}
+        A basis of $V$ is a list of vectors in $V$ which is linearly independent and spans $V$.
+    \end{defi}
+    \hfill
+    
+    \begin{prop}
+        A list $v_1,\dots,v_n$ is a basis of $V$ iff every $v\in V$ can be written uniquely in the form
+        $$v=a_1v_1+\cdots+a_nv_n$$
+        where $a_1,\dots,a_n\in\F$.
+    \end{prop}
+    \hfill
+    
+    \begin{prop}\label{2.15}
+        Every list which spans $V$ contains a basis of $V$.
+    \end{prop}
+    \begin{remark}
+        Consider \hyperref[2.10]{Lemma 2.10}.
+    \end{remark}
+    \hfill
+    
+    \begin{prop}\label{2.16}
+        Every linearly independent list in a finite-dimensional vector space is contained in a basis of $V$.
+    \end{prop}
+    \begin{remark}
+        If a linearly independent list is added a vector which is not in its previous span, then after addition, the list remains linearly independent. Then by \hyperref[2.11]{Theorem 2.11} there's an upper bound and we can extend it this way.
+    \end{remark}
+    \hfill
+    
+    \begin{prop}\label{2.17}
+        Every finite-dimensional vector space has a basis.
+    \end{prop}
+    \begin{remark}
+        Referring to \hyperref[2.4]{Definition 2.4} and \hyperref[2.15]{Proposition 2.15}.
+    \end{remark}
+    \hfill
+
+    \begin{prop}\label{2.18}
+        Suppose $V$ is finite-dimensional and $U$ is a subspace of $V$. Then there is a subspace $W$ of $V$ such that $V=U\oplus W$.
+    \end{prop}
+    \hfill
+
+    \subsection{Dimension}
+    \begin{defi}{Dimension}\label{2.19}%
+        The dimension of a finite-dimensional vector space is the length of any basis of the vector space. The dimension of $\set{0}$ is defined to be $0$.
+    \end{defi}
+    \begin{notation}{$\dim{V}$}
+        We use $\dim{V}$ to denote the dimension of $V$. 
+    \end{notation}
+    \begin{remark}
+        It can be prove that any two basis of the same vector space have the same length.
+    \end{remark}
+    \hfill
+    
+    \begin{eg}\label{2.20}
+        \hfill
+        \begin{itemize}
+            \item $\dim{\F^n}=n$
+            \item $\mathcal{P}_m(\F)=m+1$
+        \end{itemize}
+    \end{eg}
+    \hfill
+
+    \begin{prop}\label{2.21}
+        If $V$ is finite-dimensional and $U$ is the subspace of $V$, then $\dim U\leq\dim V$.
+    \end{prop}
+    \begin{remark}
+        In this proposition, $\dim{U}=\dim{V}\iff U=V$.
+    \end{remark}
+    \hfill
+
+    \begin{prop}\label{2.22}
+        If $V$ is finite-dimensional, then every linearly independent list of vectors in $V$ with length $\dim V$ is a basis of $V$.
+    \end{prop}
+    \begin{remark}
+        We can try to extend the list by \hyperref[2.16]{Proposition 2.16} but the the list has the same length of the basis. It is similar to the proposition that
+        $$
+        A\subseteq B \;\&\; |A|=|B|\in\N \implies A=B
+        $$
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        If $V$ is finite-dimensional, then every spanning list of vectors in $V$ with length $\dim V$ is a basis of $V$.
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        If $U_1$ and $U_2$ are subspaces of a finite-dimensional vector space, then
+        $$
+        \dim(U_1+U_2)=\dim{U_1}+\dim{U_2}-\dim(U_1\cap{U_2})
+        $$
+    \end{prop}
+    \begin{remark}
+        Similar to the proposition that
+        $$
+        |U_1\cup U_2|=|U_1|+|U_2|-|U_1\cap{U_2}|
+        $$and we replace $U_1\cup U_2$ with $U_1+U_2$ to make it a vector space.
+    \end{remark}
+    \hfill
+    
+    \section{Linear Maps}\addclass{Linear Maps}
+    \subsection{The Vector Space of Linear Maps}
+    \begin{defi}{Linear map}
+        A linear map from $V$ to $W$ is a function $T:V\to{W}$ with the following properties:
+        \begin{itemize}
+            \item \textbf{Additivity}
+            $$
+            T(u+v)=T(u)+T(v) \text{ for all }u,v\in V
+            $$
+            \item \textbf{Homogeneity}
+            $$
+            T(\lambda v)=\lambda T(v) \text{ for all }\lambda\in\F\text{ and all }v\in V 
+            $$
+        \end{itemize}
+    \end{defi}
+    \begin{notation}{$\mathcal{L}(V,W)$}
+        The set of all linear maps from $V$ to $W$ is denoted $\mathcal{L}(V,W)$.
+    \end{notation}
+    \hfill
+
+    \begin{eg}
+        \hfill
+        \begin{itemize}
+            \item \textbf{zero}: Define $0\in\mathcal{L}(V,W)$ by
+            $$
+            0(v)=0
+            $$
+            \item \textbf{identity}: Define $I\in\mathcal{L}(V,W)$ by
+            $$
+            I(v)=v
+            $$
+            \item \textbf{differentiation}: Define $D\in\mathcal{L}(\mathcal{P}(\R),\mathcal{P}(\R))$ by
+            $$
+            D(p)=p'
+            $$
+            \item \textbf{integration}: Define $T\in\mathcal{L}(\mathcal{P}(\R),\R)$ by
+            $$
+            T(p)=\int_0^1p(x)\mathrm{d}x
+            $$
+            \item \textbf{backward shift}: Define $T\in\mathcal{L}(\F^\infty,\F^\infty)$ by
+            $$
+            T(x_1,x_2,x_3,\dots)=(x_2,x_3,\dots)
+            $$
+            \item \textbf{from $\F^n$ to $\F^m$}:
+            every $T\in\mathcal{L}(\F^n,\F^m)$ is defined by
+            $$
+            T(x_1,\dots,x_n)=(\sum_{i=1}^nA_{1,i}x_i,\dots,\sum_{i=1}^nA_{m,i}x_i)
+            $$
+        \end{itemize}
+    \end{eg}
+    \hfill
+
+    \begin{prop}
+        Suppose $v_1,\dots,v_n$ is a basis of $V$ and $w_1,\dots,w_n$ is a basis of $W$. Then there exists a unique linear map $T:V\to W$ such that
+        $$
+        T(v_i)=w_i\text{ for all }i\in\set{1,\dots,n}
+        $$
+    \end{prop}
+    \begin{remark}
+        Every value in $V$ can be represented by linear combination of basis of $V$, and by the properties of $T$, the function value is uniquely determined.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        $\mathcal{L}(V,W)$ is a vector space with addition and scalar multiplication defined by 
+        $$(S+T)(v)=S(v)+T(v)$$
+        $$(\lambda T)(v)=\lambda T(v)$$
+        for all $S,T\in\mathcal{L}(V,W)$, $\lambda\in\F$ and $v\in V$
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Product of Linear Maps}
+        For $T\in\mathcal{L}(U,V)$ and $S\in\mathcal{L}(V,W)$, then their product $ST\in\mathcal{L}(U,W)$ is defined by
+        $$(ST)(u)=S(T(u))$$
+        for all $u\in U$
+    \end{defi}
+    \begin{remark}
+        The same definition as their composition $S\circ T$.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        The product of linear maps has the following properties:
+        \begin{itemize}
+            \item \textbf{associativity}:
+            $$(T_1T_2)T_3=T_1(T_2T_3)$$
+            \item  \textbf{identity}:
+            $$TI=IT=T$$
+            \item \textbf{distributivity}:
+            $$(S_1+S_2)T=S_1T+S_2T$$
+            $$S(T_1+T_2)=ST_1+ST_2$$
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{prop}\label{3.8}
+        Suppose $T$ is a linear map, then $T(0)=0$.
+    \end{prop}
+    \begin{remark}
+        Consider $T(0)=T(0)+T(0)$
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Null Space}
+        For $T\in\mathcal{L}(V,W)$, the null space of $T$ is defined to be $\set{v\in V\mid T(v)=0}$
+    \end{defi}
+    \begin{notation}{$\Null T$}
+        We use $\Null{T}$ to denote the null space of $T$. 
+    \end{notation}
+    \begin{remark}
+        Note that $0$ is in the null space of every linear map (by \hyperref[3.8]{Proposition 3.8}).
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V,W}$, then $\Null T$ is a subspace of $V$.
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Injective}
+        A function $T:V\to W$ is called injective iff $T(u)=T(v)\implies u=v$
+    \end{defi}
+    \begin{remark}
+        A necessary and sufficient condition for injectivity would be $\Null T=\set{0}$
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Range}
+        For $T\in\mathcal{L}(V,W)$, the range of $T$ is defined to be $\set{T(v)\mid v\in V}$
+    \end{defi}
+    \begin{notation}{$\range T$}
+        We use $\range{T}$ to denote the range of $T$. 
+    \end{notation}
+    \begin{remark}
+        $0\in\range{T}$ by \hyperref[3.8]{Proposition 3.8} .
+    \end{remark}
+    \begin{remark}
+        Note that for $T\in\mathcal{L}(V,W)$, $\range{T}$ is a subspace of $W$
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Surjective}
+        A function $T\in\lmap{V,W}$ is called surjective iff $\range{T}=W$
+    \end{defi}
+    \begin{remark}
+        $T$ in injective iff $\range T=V$.
+    \end{remark}
+    \hfill
+
+    \begin{thm}\label{3.16}
+        Suppose $V$ is finite-dimensional and $T\in\lmap{V,W}$. Then $\range T$ is finite-dimensional and we have
+        $$\dim V=\dim\Null T+\dim\range{T}$$
+    \end{thm}
+    \begin{remark}
+        This is the \textbf{Fundamental Theorem of Linear Maps}.
+    \end{remark}
+    \begin{cor}\label{3.17}
+        If $\dim V>\dim U$, then no linear map from $V$ to $W$ is injective.
+    \end{cor}
+    \begin{cor}
+        If $\dim V<\dim U$, then no linear map from $V$ to $W$ is surjective.
+    \end{cor}
+    \hfill
+
+    \begin{prop}\label{3.19}
+        A homogeneous system of linear equations with more variables than equations has nonzero solutions.
+    \end{prop}
+    \begin{remark}
+        A homogeneous system of linear equations is in the form of
+        $$
+        \begin{cases}
+            \displaystyle\sum_{i=1}^nA_{1,i}x_i=0\\
+            \displaystyle\qquad\quad\vdots\\
+            \displaystyle\sum_{i=1}^nA_{m,i}x_i=0\\
+        \end{cases}
+        $$
+        Then consider an equivalent function $T: \F^n\to\F^m$ defined by
+        $$
+        T(x_1,\dots,x_n)=(\sum_{i=1}^nA_{1,i}x_i,\dots,\sum_{i=1}^nA_{m,i}x_i)
+        $$
+        Therefore, $n>m$ implies $\dim \F^n>\dim \F^m$, and thus $T$ is not injective by \hyperref[3.17]{Corollary 3.17}, which means there are nonzero solutions.
+    \end{remark}
+    \begin{prop}
+        An inhomogeneous system of linear equations with more equations than variables has no solution for some choice of the constant terms.
+    \end{prop}
+    \begin{remark}
+        An inhomogeneous system of linear equations is in the form of
+        $$
+        \begin{cases}
+            \displaystyle\sum_{i=1}^nA_{1,i}x_i=c_1\\
+            \displaystyle\qquad\quad\vdots\\
+            \displaystyle\sum_{i=1}^nA_{m,i}x_i=c_m\\
+        \end{cases}
+        $$
+        Then rephrase the system by the same function in \hyperref[3.19]{Proposition 3.19}. Hence, $n<m$ implies $T$ is not surjective.
+    \end{remark}
+    \hfill
+
+    \subsection{Matrices}
+    \begin{defi}{Matrix}
+        An $m\text{-by-}n$ matrix $A$ is a rectangular array of elements of $\F$ with $m$ rows and $n$ columns, where $A_{i,j}$ denotes the entry in row $i$ and column $j$ of $A$.
+        $$A=\begin{pmatrix}
+            A_{1,1}& \dots &A_{1,n}\\
+            \vdots & & \vdots\\
+            A_{m,1}& \dots& A_{m,n}
+        \end{pmatrix}$$
+    \end{defi}
+    \hfill
+
+    \begin{defi}{Matrix of a linear map}
+        \addelement{$\mathcal{M}(T)$}%
+        Suppose $T\in\lmap{V,W}$ and $v_1,\dots,v_n$ is a basis of $V$ and $w_1,\dots,w_m$ is a basis of $W$. Then the matrix of $T$ with respect to these bases is the $m\text{-by-}n$ matrix $\mathcal{M}(T)$ whose entries $A_{i,j}$ are defined by 
+        $$T(v_j)=A_{1,j}w_1+\cdots+A_{m,j}w_j$$
+        That means, we have
+        \[\begin{tabular}{ccc}
+                & $\begin{matrix}v_1&\dots&v_k&\dots&v_n\end{matrix}$\\
+                $\mathcal{M}(T)=\begin{matrix}w_1\\\vdots\\w_m\end{matrix}$
+                &$\begin{pmatrix}&\quad\quad\;&A_{1,k}&\quad\quad\;&
+                \\&&\vdots&&\\&&A_{m,k}&&\end{pmatrix}$ \\
+            \end{tabular}\]
+        We also use the notation $\mathcal{M}(T,(v_1,\dots,v_n),(w_1,\dots,w_m))$ to clearify the bases.
+    \end{defi}
+    \begin{remark}
+        In fact, matrix is similar to linear map to some extent, and we call this relationship isomorphic in \hyperref[3.38]{Proposition 3.38}. 
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Matrix Addition}
+        For matrix $A,B$ with the same size, $A+B$ is defined by
+        $$
+        (A+B)_{i,j}=A_{i,j}+B_{i,j}
+        $$
+    \end{defi}
+    \begin{prop}
+        Suppose $S,T\in\lmap{V,W}$, then $\mathcal{M}(S+T)=\lmat{S}+\mathcal{M}(T)$.
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Scalar multiplication of a matrix}
+        For matrix $A$ and $\lambda\in\F$, $\lambda A$ is defined by
+        $$
+        (\lambda A)_{i,j}=\lambda A_{i,j}
+        $$
+    \end{defi}
+    \begin{prop}
+        Suppose $\lambda\in\F$ and $T\in\lmap{V,W}$, then $\lmat{\lambda T}=\lambda\lmat{T}$.
+    \end{prop}
+    \hfill
+
+    \begin{notation}{$\F^{m,n}$}
+        The set of all $m\text{-by-}n$ matrices with entries in $\F$ is denoted by $\F^{m,n}$.
+    \end{notation}
+    \begin{remark}
+        Recall that for $n\in\Z^+$, $\F^n$ denotes all \textbf{lists} of length $n$ of elements in $F$, and for set $S$, $\F^S$ denotes all \textbf{functions} from $S$ to $\F$.
+    \end{remark}
+    \hfill
+
+    \begin{prop}\label{3.28}
+        With addition and scalar multiplication defined above, $\F^{m,n}$ is a vector space with dimension $mn$.
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Matrix multiplication}
+        Suppose $A$ is an $m\text{-by-}n$ matrix and $C$ is an $n\text{-by-}p$ matrix. Then $AC$ is defined to be an $m\text{-by-}p$ matrix such that
+        $$
+        (AC)_{i,j}=\sum_{r=1}^nA_{i,r}C_{r,j}
+        $$
+    \end{defi}
+    \begin{remark}
+        This definition can ensure that $\lmat{ST}=\lmat{S}\lmat{T}$.
+    \end{remark}
+    \hfill
+
+    \begin{notation}{$A_{j,\cdot}\,\&\,A_{\cdot,k}$}
+    For an $m\text{-by-}n$ matrix $A$, $A_{j,\cdot}$ denotes the $1\text{-by-}n$ matrix consisting of row $j$ of $A$, and $A_{\cdot,k}$ denotes the $m\text{-by-}1$ matrix consisting of colomn $k$ of $A$
+    \end{notation}
+    \begin{remark}
+        Based on this notation, we have $(AC)_{j,k}=A_{j,\cdot}C_{\cdot,k}$
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $A$ is an $m\text{-by-}n$ matrix and $C$ is an $n\text{-by-}p$ matrix. Then
+        $$(AC)_{\cdot,k}=AC_{\cdot,k}$$
+    \end{prop}
+    \hfill
+    
+    \subsection{Invertibility and Isomorphic Vector Spaces}
+    \begin{defi}{Invertible \& Inverse}
+        A linear map $T\in\lmap{V,W}$ is called invertible iff there exists a linear map $S\in\lmap{W,V}$ such that 
+        $$ST=TS=I$$
+        Then $S$ is called an inverse of $T$.
+    \end{defi}
+    \begin{prop}
+        An invertible linear map has a unique inverse.
+    \end{prop}
+    \begin{notation}{$T^{-1}$}
+        Suppose $T$ is invertible, then we use $T^{-1}$ to denote the inverse of $T$.
+    \end{notation}
+    \begin{remark}
+        $T^{-1}$ is well defined since the inverse is unique.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        A linear map is invertible iff it is injective and surjective.
+    \end{prop}
+    \begin{remark}
+        For $f(v)=w$, injectivity means the \textbf{uniqueness} of $v$ and surjectivity means the \textbf{existence} $w$.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Isomorphism \& Isomorphic}
+        An isomorphism is an invertible linear map.
+
+        Two vector spaces are called isomorphic if there is an isomorphism from one vector space onto the other one.
+    \end{defi}
+    \hfill
+
+    \begin{prop}\label{3.37}
+        Two finite-dimensional vector spaces over $\F$ are isomorphic iff they have the same dimension.
+    \end{prop}
+    \begin{remark}
+        For $T\in\lmap{V,W}$,\\
+        If $T$ is injective, then $\dim{V}\leq\dim{U}$\\
+        If $T$ is surjective, then $\dim{V}\geq\dim{U}$\\
+        If $T$ is invertible, then $\dim{V}=\dim{U}$
+    \end{remark}
+    \hfill
+
+    \begin{prop}\label{3.38}
+        Suppose $\dim V=n$ and $\dim W=m$, then $\lmap{V,W}$ and $\F^{m,n}$ are isomorphic.
+    \end{prop}
+    \begin{remark}
+        $\mathcal{M}(T)$ is an isomorphism between them.
+    \end{remark}
+    \hfill
+
+    \begin{prop}\label{3.39}
+        Suppose $V,W$ are finite-dimensional, then $\dim\lmap{V,W}$ is also finite-dimensional and 
+        $$\dim\lmap{V,W}=(\dim V)(\dim W)$$
+    \end{prop}
+    \begin{remark}
+        This can be proved by \hyperref[3.28]{Proposition 3.28}, \hyperref[3.37]{Proposition 3.37} and \hyperref[3.38]{Proposition 3.38}.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Matrix of a vector}
+        \addelement{$\mathcal{M}(v)$}%
+        Suppose $v\in V$ and $v_1,\dots,v_n$ is a basis of $V$. Then the matrix of $v$ with respect to this basis is the $n\text{-by-}1$ matrix defined by
+        $$
+        \mathcal{M}(v)=\begin{pmatrix}c_1\\\vdots\\c_n\end{pmatrix}
+        $$where
+        $$
+        v=c_1v_1+\cdots+c_nv_n
+        $$
+    \end{defi}
+    \begin{remark}
+        Here $\mathcal{M}$ is also an isomorphism from $V$ to $\F^{n,1}$, building the connection between vector and matrix.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        For $T\in\lmap{V,W}$ and $v_1,\dots,v_n$ is a basis of $V$, then 
+        $$
+        \mathcal{M}(T)_{.,k}=M(v_k)
+        $$
+    \end{prop}
+    \begin{prop}
+        For $T\in\lmap{V,W}$ and $v\in V$, we have
+        $$
+        \mathcal{M}(T(v))=\mathcal{M}(T)\mathcal{M}(v)
+        $$
+    \end{prop}
+    \begin{remark}
+        Here we make connections between linear map and matrix multiplication.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Operator}
+        \addelement{$\lmap{V}$}%
+        A linear map from a vector space $V$ to itself is called an operator, denoted $\lmap{V}=\lmap{V,V}$.
+    \end{defi}
+    \hfill
+
+    \begin{thm}\label{3.44}
+        Suppose $V$ is finite-dimensional and $T\in\lmap{V}$. Then the following are equivalent:
+        \begin{itemize}
+            \item $T$ is injective.
+            \item $T$ is surjective.
+            \item $T$ is invertible.
+        \end{itemize}
+    \end{thm}
+    \begin{remark}
+        Consider \hyperref[3.16]{Theorem 3.16}.
+    \end{remark}
+    \begin{remark}
+        The equivalence doesn't hold for infinite-dimensional $V$.
+    \end{remark}
+    \begin{remark}
+        This reveals a “symmetry” of finite-dimensional vector space.
+    \end{remark}
+    \hfill
+    
+    \begin{eg}
+        For each polynomial $q\in\mathcal{P}(\R)$, there exists a polynomial $p\in\mathcal{P}(\R)$ with $((2x^2+3x+7)p)''=q$.
+    \end{eg}
+    \begin{proof}
+        For each $q\in\mathcal{P}(\R)$, suppose $\deg q=m$, then define $T:\mathcal{P}_m(\R)\to\mathcal{P}_m(\R)$ by 
+        $$T(p)=((2x^2+3x+7)p)''$$
+        Obviously $\Null T=0$, thus $T$ is injective, and then, by \hyperref[3.44]{Theorem 3.44}, $T$ is surjective, which implies the existance of $p$ such that $T(p)=q$.
+    \end{proof}
+    \hfill
+
+    \subsection{Products and Quotients of Vector Spaces}
+    \begin{defi}{Product of vector spaces}
+        Suppose $V_1,\dots,V_m$ are vector spaces over $\F$, then their product is a vector space defined by
+        $$
+        V_1\times\cdots\times V_m=\set{(v_1,\dots,v_m)\mid v_i\in V_i}
+        $$
+        
+        with addition and multiplication on the space defined by
+        $$
+        (u_1,\dots,u_m)+(v_1,\dots,v_m)=(u_1+v_1,\dots,u_m+v_m)
+        $$$$
+        \lambda(v_1,\dots,v_m)=(\lambda v_1,\dots,\lambda v_m)
+        $$
+    \end{defi}
+    \begin{eg}
+        $\R^2\times\R^3$ isn't equal to $\R^5$, but isomorphic to $\R^5$.
+    \end{eg}
+    \hfill
+
+    \begin{prop}
+        Suppose $V_1,\dots,V_m$ are finite-dimensional vector spaces, then $V_1\times\cdots\times V_m$ is finite-dimensional and we have
+        $$\dim(V_1\times\cdots\times V_m)=\dim V_1+\cdots+\dim V_m$$
+    \end{prop}
+    \begin{remark}
+        Suppose a basis of $V_i$ is $v_{i,1},\dots,v_{i,s_i}$ for all $i\in\set{1,\dots,m}$, then a basis of $V_1\times\cdots\times V_m$ is $\set{(0,\dots,0,v_{i,j},0,\dots,0)\mid 1\leq i\leq m,1\leq j\leq s_i}$ 
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $U_1,\dots,U_m$ are subspaces of $V$. Define a linear map $\Gamma:U_1\times\dots\times U_m\to U_1+\cdots+U_m$ by
+        $$
+        \Gamma(u_1,\dots,u_m)=u_1+\cdots+u_m
+        $$
+        Then $\Gamma$ is surjective. And $\Gamma$ is injective iff $U_1+\cdots+U_m$ is a direct sum.
+    \end{prop}
+    \begin{remark}
+        This reveals the product and direct sum of vector spaces are isomorphic.
+    \end{remark}
+    \begin{cor}
+        Suppose $V$ is finite-dimensional and $U_1\dots,U_m$ are subspaces of $V$. Then $U_1+\dots+U_m$ is a direct sum iff 
+        $$
+        \dim(U_1+\dots+U_m)=\dim U_1+\dots+\dim U_m
+        $$
+    \end{cor}
+    \hfill
+
+    \begin{defi}{$v+U$}
+        Suppose $v\in V$ and $U$ is a subspace of $V$, then $v+U$ is a subset of $V$ defined by
+    $$
+    v+U=\set{v+u\mid u\in U}
+    $$
+    \end{defi}
+
+    \begin{defi}{Affine subset}
+        An affine subset of $V$ is a subset of $V$ of the form $v+U$ for some $v\in V$ and some subspace $U$ of $V$.
+    \end{defi}
+    \begin{defi}{Parallel}
+        For $v\in V$ and $U$ a subset of $V$, the affine subset $v+U$ is said to be parallel to $U$.
+    \end{defi}
+    \hfill
+
+    \begin{defi}{Quotient space}\addelement{$V/U$}
+        Suppose $U$ is a subspace of $V$, then the quotient space $V/U$ is the set of all affine subsets of $V$ parallel to $U$, which means
+        $$
+        V/U=\set{v+U\mid v\in V}
+        $$
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        Suppose $U$ is a subspace of $V$ and $v,w\in V$, then the following are equivalent:
+        \begin{itemize}
+            \item $v-w\in U$
+            \item $v+U=w+U$
+            \item $(v+U)\cap(w+U)\neq\emptyset$
+        \end{itemize}
+    \end{prop}
+    \hfill
+    
+    \begin{prop}
+        Suppose $U$ is a subspace of $V$, then $V/U$ is a vector space, with the operations of addition and scalar multiplication defined by
+        $$
+        (v+U)+(w+U)=(v+w)+U
+        $$$$
+        \lambda(v+U)=(\lambda v)+U
+        $$
+    \end{prop}
+    \begin{remark}
+        Under such definition, $v\in V$ and $v+U\in V/U$ are correspondingly related in form. But note that $v+U$ can repeat but $v$ cannot, thus two spaces are not isomorphic.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Quotient map}\addelement{$\pi(v)$}%
+        Suppose $U$ is a subspace of $V$, then the quotient map $\pi$ is linear map $\pi:V\to V/U$ defined by 
+        $$
+        \pi(v)=v+U
+        $$
+    \end{defi}
+    \hfill
+    
+    \begin{prop}\label{3.58}
+        Suppose $V$ is a finite-dimensional and $U$ is a subspace of $V$. Then
+        $$
+        \dim V/U=\dim V-\dim U
+        $$
+    \end{prop}
+    \begin{remark}
+        Proved by $\Null\pi=U$.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{$\Tilde{T}$}
+        Suppose $T\in\lmap{V,W}$. Define $\Tilde{T}:V/(\Null T)\to W$ by 
+        $$
+        \Tilde{T}(v+\Null T)=T(v)
+        $$
+    \end{defi}
+    \begin{remark}
+        $\Tilde{T}$ is a “compression” of $T$ which puts together $w$ and $v$ satisfying $T(w)=T(v)$. Actually, we have 
+        $$
+        T(u)=\Tilde{T}(U)\iff u\in U.
+        $$
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V,W}$, then
+        \begin{itemize}
+            \item $\Tilde{T}$ is a linear map from $V/(\Null T)$ to $W$.
+            \item $\Tilde{T}$ is injective.
+            \item $\range \Tilde{T}=\range T$.
+            \item $V/(\Null T)$ is isomorphic to $\range T$.
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \subsection{Duality}
+    \begin{defi}{Linear functional}\label{3.61}
+        A linear functional on $V$ is a linear map from $V$ to $\F$.
+    \end{defi}
+    \begin{remark}
+        By \hyperref[3.16]{Theorem 3.16}, for a nonzero linear functional $T:V\to\F$, we have $\dim\Null T=\dim V-1$.
+    \end{remark}
+    \begin{defi}{Dual space}\addelement{$V'$}%
+        The dual space of $V$, denoted $V'$, is the vector space of all linear functionals on $V$, i.e. $V'=\lmap{V,\F}$.
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        Suppose $V$ is finite-dimensional, then $V'$ is also finite-dimensional and $\dim V'=\dim V$.
+    \end{prop}
+    \begin{remark}
+        Special case of \hyperref[3.39]{Proposition 3.39}.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Dual basis}
+        If $v_1,\dots,v_n$ is a basis of $V$, then the dual basis of $v_1,\dots,v_n$ is the list $\varphi_1,\dots,\varphi_n$ of elements of $V'$, where each $\varphi_j$ is the linear functional on $V$ such that
+        $$
+        \varphi_j(v_k)=\begin{cases}1 & k=j\\0 & k\neq j\end{cases}
+        $$
+    \end{defi}
+    \begin{remark}
+        $\varphi_j$ represents the linear function that \textbf{selects} the $j$\textsuperscript{th} coordinate, and $\span(\varphi_j,\varphi_k)$ represents the set of linear combination of the $j$\textsuperscript{th} and $k$\textsuperscript{th} coordinate.
+    \end{remark}
+    \begin{prop}
+        Suppose $V$ is finite-dimensional. Then the dual basis of a basis of $V$ is a basis of $V'$.
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Dual map}\addelement{$T'$}%
+        If $T\in\lmap{V,W}$, then the dual map of $T$ is the linear map $T'\in\lmap{W',V'}$ defined by $T'(\varphi)=\varphi\circ T$ for $\varphi\in W'$.
+    \end{defi}
+    \begin{remark}\label{3.66r1}
+        $\varphi\in W'$ is the linear combination of the basis of $W$, and $T\in\lmap{V,W}$ makes every component of basis of $W$ to be represented as linear combinations of the basis of $V$, thus $T'$ seems to change the domain of $\varphi$ from $W$ to $V$.
+    \end{remark}
+    \begin{remark}
+        \hfill
+    
+        \begin{itemize}
+            \item For a vector space $V$, $V'$ denotes the dual space of $V$.
+            \item For a linear map $T$, $T'$ denotes the dual map of $T$.
+            \item For a polynomial $p$, $p'$ denotes the derivative of $p$.
+        \end{itemize}
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        \hfill
+        
+        \begin{itemize}
+            \item $(S+T)'=S'+T'$ for all $S,T\in\lmap{V,W}$.
+            \item $(\lambda T)'=\lambda T'$ for all $\lambda\in\F$ and all $T\in\lmap{V,W}$.
+            \item $(ST)'=T'S'$ for all $T\in\lmap{U,V}$ and $S\in\lmap{V,W}$.
+        \end{itemize}
+    \end{prop}
+    \begin{remark}
+        The first two results indicate that the function which takes $T$ to $T'$ is a linear map.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Annihilator}\addelement{$U^0$}%
+        For $U\subset V$, the annihilator of $U$, denoted $U^0$, is defined by
+        $$
+        U^0=\set{\varphi\in V'\mid \varphi(u)=0,\;\forall u\in U}
+        $$
+    \end{defi}
+    \begin{eg}
+        Let $e_1,e_2,e_3,e_4,e_5$ denote the standard basis of $\R^5$, and let $\varphi_1,\varphi_2,\varphi_3,\varphi_4,\varphi_5$ denote the dual basis of $(\R_5)'$. Suppose $U=\span(e_1,e_2)$, then $U^0=\span(\varphi_3,\varphi_4,\varphi_5)$.
+    \end{eg}
+    \begin{prop}
+        Suppose $U\subset V$. Then $U^0$ is a subspace of $V'$.
+    \end{prop}
+    \hfill
+
+    \begin{prop}\label{3.71}
+        Suppose $V$ is finite-dimensional and $U$ is a subspace of $V$. Then
+        $$
+        \dim U+\dim U^0=\dim V
+        $$
+    \end{prop}
+    \begin{remark}
+        Consider $i\in\lmap{U,V}$ defined by $i(u)=u$, then $i'\in\lmap{V',U'}$, thus by \hyperref[3.16]{Theorem 3.16}
+        $$
+        \dim\range{i'}+\dim\Null{i'}=\dim V
+        $$
+        then we prove it by $\Null{i'}=U^0$ and $\range{i'}=U'$.
+
+        $$i'(\varphi)=0\iff\forall u\in U, i'(\varphi)(u)=0\iff\forall u\in U,\varphi(i(u))=0\iff\varphi\in U^0$$
+    \end{remark}
+    \hfill
+
+    \begin{prop}\label{3.72}
+        Suppose $V$ and $W$ are finite-dimensional and $T\in\lmap{V,W}$, then
+        \begin{itemize}
+            \item $\Null T'=(\range T)^0$
+            \item $\dim\Null T'=\dim \Null T+\dim W-\dim V$
+        \end{itemize}
+    \end{prop}
+    \begin{prop}
+        Suppose $V$ and $W$ are finite-dimensional and $T\in\lmap{V,W}$. Then $T$ is surjective iff $T'$ is injective.
+    \end{prop}
+    \hfill
+    
+    \begin{prop}\label{3.74}
+        Suppose $V$ and $W$ are finite-dimensional and $T\in\lmap{V,W}$. Then
+        \begin{itemize}
+            \item $\dim\range T'=\dim\range T$
+            \item $\range T'=(\Null T)^0$
+        \end{itemize}
+    \end{prop}
+    \begin{prop}
+        Suppose $V$ and $W$ are finite-dimensional and $T\in\lmap{V,W}$. Then $T$ is injective iff $T'$ is surjective.
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Transpose}\addelement{$\trans{A}$}%
+    Suppose $A$ is an \by{m}{n} matrix, then $\trans{A}$ is the \by{n}{m} matrix whose entries are given by
+    $$
+    \trans{A}_{i,j}=A_{j,i}
+    $$
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        If $A$ is an \by{m}{n} matrix and $C$ is an \by{n}{p} matrix, then
+        $$
+        \trans{(AC)}=\trans{C}\trans{A}
+        $$
+    \end{prop}
+    \hfill
+    
+    \begin{prop}
+        Suppose $T\in\lmap{V,W}$. Then $\lmat{T'}=\trans{(\lmat{T})}$
+    \end{prop}
+    \begin{remark}
+        As mentioned \hyperref[3.66r1]{above}, $T'$ is like representing the basis of $W$ as linear combination of the basis of $V$. The transpose has similar meaning as well.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Row Rank \& Column Rank}
+        Suppose $A$ is an \by{m}{n} matrix with entries in $\F$. Then
+        \begin{itemize}
+            \item The row rank of $A$ is the dimension of the span of the rows of $A$ in $\F^{1,n}$.
+            \item The column rank of $A$ is the dimension of the span of the columns of $A$ in $\F^{m,1}$.
+        \end{itemize}
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        \textbf{column-row factorization}
+
+        Suppose $A$ is an \by{m}{n} matrix with column rank $c\geq1$. Then there exist an \by{m}{c} matrix $C$ and a \by{c}{n} matrix $R$ such that 
+        $$
+        A=CR
+        $$
+    \end{prop}
+    \begin{prop}
+        Suppose $C$ is an \by{m}{c} matrix and $R$ is a \by{c}{n} matrix, then
+        \begin{itemize}
+            \item For $k\in\set{1,\dots,n}$, column $k$ of $CR$ is a linear combination of the columns of $C$, with the coefficients coming from column $k$ of $R$.
+            \item For $k\in\set{1,\dots,m}$, row $k$ of $CR$ is a linear combination of the rows of $R$, with the coefficients coming from row $k$ of $C$.
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $V$ and $W$ are finite-dimensional and $T\in\lmap{V,W}$. Then $\dim\range T$ equals the column rank of $\lmat{T}$.
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $A\in\F^{m,n}$. Then the row rank of $A$ equals the column rank of $A$.
+    \end{prop}
+    \begin{remark}
+        $$\range T=\range T'$$
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Rank}
+        The rank of a matrix $A\in\F^{m,n}$ is the column rank of $A$.
+    \end{defi}
+    \hfill
+
+    \section{Polynomials}\addclass{Polynomials}%
+    \begin{prop}
+        Suppose $a_0,\dots,a_m\in\F$, then
+        $$
+        \forall z\in\F,\;a_0+a_1z+\cdots+a_mz^m=0\implies a_0=\cdots=a_m=0
+        $$
+    \end{prop}
+    \begin{remark}
+        This shows that the coefficients are uniquely determined, i.e. the same function is equivalent to the same coeffiecient.
+    \end{remark}
+    \hfill
+    
+    \begin{prop}
+    Suppose that $p,s\in\mathcal{P}(\F)$ with $s\neq0$. Then there exist unique polynomials $q,r\in\mathcal{P}(\F)$ such that $\deg r<\deg s$ and 
+    $$
+    p=sq+r
+    $$
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Zero of a polynomial}
+        A number $\lambda\in\F$ is called a zero (or root) of a polynomial $p\in\mathcal{P}(\F)$ if
+        $$p(\lambda)=0$$
+    \end{defi}
+    \begin{defi}{Factor}
+        A polynomial $s\in\mathcal{P}(\F)$ is called a factor of $p\in\mathcal{P}(\F)$ if there exists a polynomial $q\in\mathcal{P}(\F)$ such that $p=sq$.
+    \end{defi}
+    \hfill
+
+    \begin{prop}\label{4.5}
+        Suppose $p\in\poly{\F}$ and $\lambda\in\F$.Then $p(\lambda)=0$ iff there exists a polynomial $q\in\poly{\F}$ such that for every $z\in\F$
+        $$
+        p(z)=(z-\lambda)q(z)
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $p\in\poly{\F}$ is a polynomial with degree $m\geq 0$. Then $p$ has at most $m$ distinct zeros in $\F$.
+    \end{prop}
+    \hfill
+
+    \begin{thm}\label{4.7}
+        Every nonconstant polynomial with complex coefficients has a zero.
+    \end{thm}
+    \begin{remark}
+        This is the \textbf{Fundamental Theorem of Algebra}.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $p\in\poly{\C}$ is a nonconstant polynomial, then $p$ has a unique factorization (regardless of the order of the factors) of the form
+        $$p(z)=c(z-\lambda_1)\cdots(z-\lambda_m)$$
+        where $c,\lambda_1,\dots,\lambda_m\in\C$.
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $p\in\poly{\C}$ is a polynomial with real coefficients. If $\lambda\in\C$ is a zero of $p$, then so is $\Bar{\lambda}$
+    \end{prop}
+    \begin{remark}
+        Just by taking complex conjugate of both side of the equation
+        $$
+        a_0+a_1z+\cdots+a_mz^m=0
+        $$
+        To further prove that they appear the same number of times, we can use \hyperref[4.5]{Proposition 4.5} to cancel each one of them and then prove it by induction.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $p\in\poly{\R}$ is a nonconstant polynomial, then $p$ has a unique factorization (regardless of the order of the factors) of the form
+        $$p(x)=c(x-\lambda_1)\cdots(x-\lambda_m)(x^2+b_1x+c_1)\cdots(x^2+b_Mx+c_M)$$
+        where $c,\lambda_1,\dots,\lambda_m,b_1,\dots,b_M,c_1,\dots,c_M\in\R$, with $b_i^2<4c_i$ for each $i$.
+    \end{prop}
+    \hfill
+
+    \section{Eigenvalues and Eigenvectors}\addclass{Eigenvalues and Eigenvectors}
+    \subsection{Invariant Subspaces}
+    \begin{defi}{Invariant subspace}
+        Suppose $T\in\lmap{V}$. A subspace $U$ of $V$ is called invariant under $T$ if
+        $$u\in U\implies T(u)\in U$$
+    \end{defi}
+    \begin{eg}
+        Suppose $T\in\lmap{V}$. Then the following special subspaces are invariant subspaces of $V$:
+        \begin{itemize}
+            \item $\set{0}$
+            \item $V$
+            \item $\Null T$
+            \item $\range T$
+        \end{itemize}
+    \end{eg}
+    \hfill
+
+    \begin{defi}{Eigenvalue}
+        Suppose $T\in\lmap{V}$. $\lambda\in\F$ is called an eigenvalue if there exists $v\in V$ such that $v\neq0$ and $T(v)=\lambda v$.
+    \end{defi}
+    \hfill
+
+    \begin{prop}\label{5.4}
+        Suppose $V$ is finite-dimensional, $T\in\lmap{V}$, $\lambda\in\F$, then the following are equivalent:
+        \begin{itemize}
+            \item $\lambda$ is an eigenvalue of $T$
+            \item $T-\lambda I$ is not injective
+            \item $T-\lambda I$ is not surjective
+            \item $T-\lambda I$ is not invertible
+        \end{itemize}
+    \end{prop}
+    \begin{remark}
+        The last three statements are equivalent by \hyperref[3.44]{Proposition 3.44}.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Eigenvector}
+        Suppose $T\in\lmap{V}$ and $\lambda\in\F$ is an eigenvalue of $T$. A vector $v\in V$ is called an eigenvector of $T$ corresponding to $\lambda$ if $v\neq 0$ and $T(v)=\lambda v$.
+    \end{defi}
+    \begin{remark}
+        A sufficient and neccessary condition would be $v\in\Null(T-\lambda I)$.
+    \end{remark}
+    \hfill
+
+    \begin{prop}\label{5.6}
+        Let $T\in\lmap{V}$. Suppose $\lambda_1,\dots,\lambda_m$ are distinct eigenvalues of $T$ and their corresponding eigenvectors are $v_1,\dots,v_m$. Then $v_1,\dots,v_m$ is linearly independent.
+    \end{prop}
+    \begin{cor}
+        Suppose $V$ is finite-dimensional, then each operator on $V$ has at most $\dim V$ distinct eigenvalues.
+    \end{cor}
+    \hfill
+
+    \begin{defi}{Restriction operator \& quotient operator}\addelement{$T|_{U}$ \& $T/U$}
+    Suppose $T\in\lmap{V}$ and $U$ is a subspace of $V$ invariant under $T$. Then
+    \begin{itemize}
+        \item The restriction operator $T|_{U}\in\lmap{U}$ is defined by
+        $$
+        T|_{U}(u)=T(u)
+        $$for $u\in U$.
+        \item The quotient operator $T/U\in\lmap{V/U}$ is defined by
+        $$
+        T/U(v+U)=T(v)+U
+        $$for $v\in V$.
+    \end{itemize}        
+    \end{defi}
+    \hfill
+
+    \begin{defi}{$T^m$}
+        Suppose $T\in\lmap{V}$,
+        \begin{itemize}
+            \item For $m\in\Z^+$, $T^m$ is defined by
+            $$
+            T^m=\underset{m\text{ times}}{\underbrace{T\cdots T}}
+            $$
+            \item $T^0$ is defined to be the identity operator $I$ on $V$.
+            \item If $T$ is invertible with inverse $T^{-1}$, then $T^{-m}$ is defined by
+            $$
+            T^{-m}=(T^{-1})^{m}
+            $$
+        \end{itemize}
+    \end{defi}
+    \hfill
+
+    \begin{defi}{$p(T)$}
+        Suppose $T\in\lmap{V}$ and $p\in\poly{\F}$ is a polynomial given by
+        $$
+        p(z)=a_0+a_1z+\cdots+a_mz^m
+        $$for $z\in\F$.
+        
+        Then $p(T)$ is the operator defined by
+        $$
+        p(T)=a_0I+a_1T+\cdots+a_mT^m
+        $$
+    \end{defi}
+    \hfill
+
+    \begin{defi}{Product of polynomials}
+        Suppose $p,q\in\poly{\F}$, then $pq\in\poly{\F}$ is the polynomial defined by
+        $$
+        (pq)(z)=p(z)q(z)
+        $$
+    \end{defi}
+    \begin{prop}
+        Suppose $p,q\in\poly{\F}$ and $T\in\lmap{V}$. Then
+        $$
+        (pq)(T)=p(T)q(T)=q(T)p(T)
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ and $p\in\poly{\F}$. Then $\Null p(T)$ and $\range p(T)$ are invariant under $T$.
+    \end{prop}
+    
+    \hfill
+
+    \subsection{The Minimal Polynomial}
+    \begin{prop}\label{5.14}
+        Every operator on a finite-dimensional, nonzero, complex vector space has an eigenvalue.
+    \end{prop}
+    \begin{remark}
+        Think of the process how we find an eigenvalue, then prove it by the existance of complex root, i.e \hyperref[4.7]{the Fundamental Theorem of Algebra}.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Monic polynomial}
+        A monic polynomial is a polynomial whose highest-degree coefficient equals $1$.
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        Suppose $V$ is finite-dimensional and $T\in\lmap{V}$. Then there is a unique monic polynomial $p\in\poly{\F}$ of the smallest degree such that $p(T)=0$. Furthermore, $\deg p\leq\dim V$.
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Minimal polynomial}
+        Suppose $V$ is finite-dimensional and $T\in\lmap{V}$. Then the minimal polynomial of $T$ is the unique monic polynomial $p\in\poly{\F}$ of smallest degree such that $p(T)=0$.
+    \end{defi}
+    \hfill
+
+    \begin{prop}\label{5.18}
+        Suppose $V$ is finite-dimensional and $T\in\lmap{V}$, then
+        \begin{itemize}
+            \item The zeros of the minimal polynomial of $T$ are the eigenvalues of $T$.
+            \item If V is a complex vector space, then the minimal polynomial of $T$ has the form
+            $$
+            (z-\lambda_1)\cdots(z-\lambda_m)
+            $$
+            where $\lambda_1,\dots,\lambda_m$ is a list of all eigenvalues of $T$, possibly with repetitions.
+        \end{itemize}
+    \end{prop}
+    \begin{remark}
+        Note that for the second point, we cannot obtain the exact minimal polynomial of $T$ easily from its eigenvalues, but only the form. Equivalently, we only know that $z-\lambda$ is a factor of the minimal polynomial, but cannot determine the exact degree, as is meant by “possibly with repetitions”.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $V$ is finite-dimensional, $T\in\lmap{V}$ and $p\in\poly{\F}$. Then $q(T)=0$ iff $q$ is a polynomial multiple of the minimal polynomial of $T$.
+    \end{prop}
+    \begin{cor}
+        Suppose $V$ is finite-dimensional, $T\in\lmap{V}$, and $U$ is a subspace of $V$ that is invariant under $T$. Then the minimal polynomial of $T$ is a polynomial multiple of the minimal polynomial of $T|_{U}$.
+    \end{cor}
+    \hfill
+
+    \begin{prop}
+        Suppose $V$ is finite-dimensional and $T\in\lmap{V}$. Then $T$ is not invertible iff the constant term of the minimal polynomial of $T$ is $0$.
+    \end{prop}
+    \begin{remark}
+        Consider \hyperref[5.4]{Proposition 5.4} and \hyperref[5.18]{Proposition 5.18}.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $\F=\R$ and $V$ is finite-dimensional. Suppose also that $T\in\lmap{V}$ and $b,c\in\R$ with $b^2<4c$. Then $\dim\Null(T^2+bT+cI)$ is an even number.
+    \end{prop}
+    \begin{remark}
+        Notice that $T^2+bT+cI=0$ implies $T$ has no eigenvalue.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Every operator on an odd-dimensional real vector space has an eigenvalue.
+    \end{prop}
+    \begin{remark}
+        Analogy: Every odd-degree polynomial with real coefficients have a real root.
+    \end{remark}
+    
+    \subsection{Upper-Triangular Matrices}
+    \begin{defi}{Matrix of an operator}\addelement{$\lmat{T}$}%
+    Suppose $T\in\lmap{V}$ and $v_1,\dots,v_n$ is a basis of $V$. The matrix of $T$, denoted $\lmat{T}$, with respect to this basis is the \by{n}{n} matrix defined by
+    $$
+    \lmat{T}=\begin{pmatrix}
+        A_{1,1} & \cdots & A_{1,n}\\
+        \vdots & & \vdots\\
+        A_{n,1} & \cdots & A_{n,n}\\
+    \end{pmatrix}
+    $$
+    where the entries $A_{i,j}$ are defined by
+    $$
+    T(v_j)=A_{1,j}v_1+\cdots+A_{n,j}v_n
+    $$
+    We also use the notation $\lmat{T,(v_1,\dots,v_n)}$ to clearify the basis.
+    \end{defi}
+    \hfill
+
+    \begin{defi}{Diagonal of a matrix}
+        The diagonal of a square matrix consists of the entries along the line from the upper left corner to the bottom right corner.
+    \end{defi}
+    \begin{defi}{Upper-triangular matrix}
+        A matrix is called upper triangular if all the entries below the diagonal equal $0$.
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ and $v_1,\dots,v_n$ is a basis of $V$. Then the following are equivalent.
+        \begin{itemize}
+            \item the matrix of $T$ with respect to $v_1,\dots,v_n$ is upper triangular.
+            \item $T(v_i)\in\span(v_1,\dots,v_i)$ for each $i\in\set{1,\dots,n}$
+            \item $\span(v_1,\dots,v_i)$ is invariant under $T$ for each $i\in\set{1,\dots,n}$
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{prop}\label{5.28}
+        Suppose $V$ is a finite-dimensional complex vector space and $T\in\lmap{V}$. Then $T$ has an upper-triangular matrix with some basis of $V$.
+    \end{prop}
+    \begin{remark}
+        We can consider the restriction operator $T|_{U}$ on a subspace $U$ of $V$, then prove this proposition by induction.
+    \end{remark}
+    \begin{remark}
+        Alternatively, we can consider the quotient operator $T/U$ and we can also apply our induction hypothesis by \hyperref[3.58]{Proposition 3.58}.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ has an upper-triangular matrix with respect to some basis of $V$. Then $T$ is invertible iff all the entries on the diagonal of that upper-triangular matrix are nonzero.
+    \end{prop}
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ has an upper-triangular matrix with respect to some basis of $V$. Then the eigenvalues of $T$ are precisely the entries on the diagonal of that upper-triangular matrix.
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $V$ is finite-dimensional and $T\in\lmap{V}$. Then $T$ has an upper-triangular matrix with respect to some basis of $V$ iff the minimal polynomial of $T$ equals $(z-\lambda_1)\cdots(z-\lambda_m)$ for some $\lambda_1,\dots,\lambda_m\in\F$.
+    \end{prop}
+    \hfill
+
+    \subsection{Eigenspaces and Diagonal Matrices}
+    \begin{defi}{Diagonal matrix}
+        A diagonal matrix is a square matrix that is $0$ everywhere except possibly along the diagonal.
+    \end{defi}
+    \hfill
+
+    \begin{defi}{Eigenspace}\addelement{$E(\lambda,T)$}%
+        Suppose $T\in\lmap{V}$ and $\lambda\in\F$. The eigenspace of $T$ corresponding to $\lambda$, denoted $E(\lambda,T)$, is defined by 
+        $$
+        E(\lambda,T)=\Null(T-\lambda I)
+        $$In other words, $E(\lambda,T)$ is set of all eigenvectors of $T$ corresponding to $\lambda$, along with the $0$ vector.
+    \end{defi}
+    \begin{remark}
+        This implies that $\lambda$ is an eigenvalue of $T$ iff $E(\lambda,T)\neq\set{0}$
+    \end{remark}
+    \begin{remark}
+        If $\lambda$ is an eigenvalue of $T$, then it implies $T|_{E(\lambda,T)}(v)=\lambda v$.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $V$ is finite-dimensional and $T\in\lmap{V}$. Suppose also that $\lambda_1,\dots,\lambda_m$ are distinct eigenvalues of $T$. Then
+        $$
+        E(\lambda_1,T)+\cdots+E(\lambda_m,T)
+        $$
+        is a direct sum. Furthermore, we have
+        $$
+        \dim E(\lambda_1,T)+\cdots+\dim E(\lambda_m,T)\leq \dim V
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Diagonalizable}\label{5.35}
+        An operator $T\in\lmap{V}$ is diagonalizable if the operator has a diagonal matrix with respect to some basis of $V$.
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        Suppose $V$ is finite-dimensional and $T\in\lmap{V}$. Let $\lambda_1,\dots,\lambda_m$ denote the distinct eigenvalues of $T$. Then the following are equivalent.
+        \begin{itemize}
+            \item $T$ is diagonalizable
+            \item $V$ has a basis consisting of eigenvectors of $T$.
+            \item there exists $1$-dimensional subspaces $U_1,\dots,U_n$ of $V$, each invariant under $T$, such that
+            $$
+            V=U_1\oplus\cdots\oplus U_n
+            $$
+            \item $V=E(\lambda_1,T)\oplus\cdots\oplus E(\lambda_m,T)$
+            \item $\dim V=\dim E(\lambda_1,T)+\cdots+\dim E(\lambda_m,T)$
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        If $T\in\lmap{V}$ has $\dim V$ distinct eigenvalues, then $T$ is diagonalizable.
+    \end{prop}
+    \begin{remark}
+        Note that this is not a neccessary condition for diagonalizability.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $V$ is finite-dimensional and $T\in\lmap{V}$. Then $T$ is diagonalizable iff the minimal polynomial of $T$ equals $(z-\lambda_1)\cdots(z-\lambda_m)$ for some list of distinct numbers $\lambda_1,\dots,\lambda_m\in\F$.
+    \end{prop}
+    \begin{remark}
+        That means, $T$ is diagonalizable iff its minimal polynomial has no repeated roots.
+    \end{remark}
+    \begin{cor}
+        Suppose $T\in\lmap{V}$ is diagonalizable and $U$ is a subspace of $V$ that is invariant under $T$. Then $T|_U$ is a diagonalizable operator on $U$.
+    \end{cor}
+    \hfill
+
+    \begin{defi}{Gershgorin disks}
+        Suppose $T\in\lmap{V}$ and $v_1,\dots,v_n$ is a basis of $V$. Let $A$ denote the matrix of $T$ with respect to this basis. A Gershgorin disk of $T$ with respect to this basis is a set of the form
+        $$
+        \set{z\in\F\;\middle|\;\abs{z-A_{i,i}}\leq \sum_{{j=1,\,j\neq i}}^n \abs{A_{i,j}}}
+        $$
+        where $i\in\set{1,\dots,n}$.
+    \end{defi}
+    \hfill
+
+    \begin{thm}
+        \textbf{Gershgorin disk theorem}
+        
+        Suppose $T\in\lmap{V}$ and $v_1,\dots,v_n$ is a basis of $V$. Then each eigenvalue of $T$ is contained in some Gershgorin disk of $T$ with respect to the basis $v_1,\dots,v_n$.
+    \end{thm}
+
+    \subsection{Commuting Operators}
+    \begin{defi}{Commute}
+        \begin{itemize}
+            \item Two operators $S$ and $T$ on the same vector space commute if $ST=TS$.
+            \item Two square matrix $A$ and $B$ of the same size commute if $AB=BA$.
+        \end{itemize}
+    \end{defi}
+    \begin{remark}
+        Note that the identity operator $I$ commutes with every operator on $V$.
+    \end{remark}
+    \begin{prop}
+        Suppose $S,T\in\lmap{V}$. Then $S$ and $T$ commute iff $\lmat{S}$ and $\lmat{T}$ commute.
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $S,T\in\lmap{V}$ commute and $\lambda\in\F$, then $E(\lambda,S)$ is invariant under $T$.
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Two diagonalizable operators on the same vector space possibly have diagonal matrices with respect to the same basis iff the two operators commute.
+    \end{prop}
+    \begin{remark}
+        This does not mean they have exactly the same set of eigenvectors, just by considering the identity operator $I$, which commutes with every operator.
+        
+        This is because the proof just makes sure that they have a list of common eigenvectors with length $\dim V$. More explicitly, the proof shows that they have common eigenvectors in every eigenspace, which may consist of linear combinations of multiple eigenvectors.
+        
+        For example, if $\lambda_1,\lambda_2$ are eigenvectors of $S$ with the same eigenvalue, and $\lambda_3$, which is a linear combination of $\lambda_1,\lambda_2$, is an eigenvector of $T$, which has the same eigenvalue with $\lambda_4$, which is not a linear combination of $\lambda_1,\lambda_2$. Therefore, $\span(\lambda_1,\lambda_2)$ are eigenvectors of $S$, while $\span(\lambda_3,\lambda_4)$ are eigenvectors of $T$, which is not exactly the same.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Every pair of commuting operators on a finite-dimensional nonzero complex vector space has a common eigenvector.
+    \end{prop}
+    \begin{remark}
+        Complex vector space only makes sure the existance of eigenvector, as stated in \hyperref[5.14]{Proposition 5.14}.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $V$ is a finite-dimensional complex vector space and $S,T$ are commuting operators on $V$. Then there is a basis of $V$ with respect to which both $S$ and $T$ have upper-triangular matrices.
+    \end{prop}
+    \begin{remark}
+        An extension of \hyperref[5.28]{Proposition 5.28}.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $V$ is a finite-dimensional complex vector space and $S,T$ are commuting operators on $V$. Then
+        \begin{itemize}
+            \item every eigenvalue of $S+T$ is an eigenvalue of $S$ plus an eigenvalue of $T$
+            \item every eigenvalue of $ST$ is an eigenvalue of $S$ times an eigenvalue of $T$
+        \end{itemize}
+    \end{prop}
+    \begin{remark}
+        Just by consider the upper-triangular form of $S$ and $T$.
+    \end{remark}
+    \hfill
+        
+    \section{Inner Product Spaces}\addclass{Inner Product Spaces}%
+    \subsection{Inner Products and Norms}
+    \begin{defi}{Dot Product}
+        For $x,y\in\R^n$, the dot product of $x$ and $y$, denoted $x\cdot y$, is defined by
+        $$
+        x\cdot y=x_1y_1+\cdots+x_ny_n
+        $$
+        where $x=(x_1,\dots,x_n)$ and $y=(y_1,\dots,y_n)$.
+    \end{defi}
+    \hfill
+
+    \begin{defi}{Inner Product}\addelement{$\iprod{u,v}$}
+        An inner product on $V$ is a function that takes each ordered pair $(u,v)\in V\times V$ to a number $\iprod{u,v}\in\F$ and has the following properties:
+        \begin{itemize}
+            \item \textbf{positivity}
+            $$
+            \iprod{v,v}\geq 0
+            $$
+            \item \textbf{definiteness}
+            $$
+            \iprod{v,v}=0\iff v=0
+            $$
+            \item \textbf{additivity in first slot}
+            $$
+            \iprod{u+v,w}=\iprod{u,w}+\iprod{v,w}
+            $$
+            \item \textbf{homogeneity in first slot}
+            $$
+            \iprod{\lambda u,v}=\lambda\iprod{u,v}
+            $$
+            \item \textbf{conjugate symmetry}
+            $$
+            \iprod{u,v}=\overline{\iprod{v,u}}
+            $$
+        \end{itemize}
+    \end{defi}
+    \begin{remark}
+        The positivity implies that $\iprod{v,v}\in\R$.
+    \end{remark}
+    \begin{eg}
+        \hfill
+        
+        \begin{itemize}
+            \item The Euclidean inner product on $\F^n$ is defined by
+            $$
+            \iprod{(w_1,\dots,w_n),(z_1,\dots,z_n)}=w_1\overline{z_1}+\dots+w_n\overline{z_n}
+            $$
+            \item let $c_1,\dots,c_n>0$, then we can define an inner product on $\F^n$ by
+            $$
+            \iprod{(w_1,\dots,w_n),(z_1,\dots,z_n)}=c_1w_1\overline{z_1}+\dots+c_nw_n\overline{z_n}
+            $$
+            \item We can define the an inner product on the vector space of continous real-valued functions on the interval $[-1,1]$ by
+            $$
+            \iprod{f,g}=\int_{-1}^1f(x)g(x)\d x
+            $$
+            \item An inner product on $\poly{\R}$ can be defined by
+            $$
+            \iprod{p,q}=\int_{0}^{\infty}p(x)q(x)e^{-x}\d x
+            $$
+        \end{itemize}
+    \end{eg}
+    
+    \begin{defi}{Inner product space}
+        An inner product space is a vector space along with an inner product on $V$.
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        \hfill
+    
+        \begin{itemize}
+            \item For each fixed $u\in V$, the function that takes $v$ to $\iprod{v,u}$ is a linear map from $V$ to $\F$.
+            \item $\iprod{0,u}=\iprod{u,0}=0$ for all $u\in V$.
+            \item $\iprod{u,v+w}=\iprod{u,v}+\iprod{u,w}$ for all $u,v,w\in V$
+            \item $\iprod{u,\lambda v}=\Bar{\lambda}\iprod{u,v}$ for all $\lambda\in\F$ and $u,v\in V$.
+        \end{itemize}
+    \end{prop}
+    \hfill
+    
+    \begin{defi}{Norm}\addelement{$\norm{v}$}%
+        For $v\in V$, the norm of $v$, denoted $\norm{v}$, is defined by
+        $$
+        \norm{v}=\sqrt{\iprod{v,v}}
+        $$
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        Suppose $v\in V$, then
+        \begin{itemize}
+            \item $\norm{v}=0\iff v=0$
+            \item $\norm{\lambda v}=\abs{\lambda}\norm{v}$ for all $\lambda\in\F$
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Orthogonal}
+        Two vectors $u,v\in V$ are called orthogonal if $\iprod{u,v}=0$
+    \end{defi}
+    \hfill
+    
+    \begin{prop}
+        \hfill
+
+        \begin{itemize}
+            \item $0$ is orthogonal to every vector in $V$.
+            \item $0$ is the only vector in $V$ that is orthogonal to itself.
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{thm}
+        \textbf{Pythagorean Theorem}
+        
+        Suppose $u$ and $v$ are orthogonal vectors in $V$. Then
+        $$
+        \norm{u+v}^2=\norm{u}^2+\norm{v}^2
+        $$
+    \end{thm}
+    \hfill
+
+    \begin{prop}
+        \textbf{Orthogonal decomposition}
+
+        Suppose $u,v\in V$ with $v\neq0$. Let $c=\displaystyle\frac{\iprod{u,v}}{\norm{v}}$ and $\displaystyle w=u-\frac{\iprod{u,v}}{\norm{v}}v$. Then
+        $$
+        \iprod{w,v}=0\quad\text{and}\quad u=cv+w
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{thm}
+        \textbf{Cauchy–Schwarz Inequality}
+
+        Suppose $u,v\in V$. Then
+        $$
+        \abs{\iprod{u,v}}\leq\norm{u}\norm{v}
+        $$
+        where equality holds iff one of $u$ and $v$ is a scalar multiple of the other.
+    \end{thm}
+    \begin{remark}
+        Applied the Euclidean inner product on $\R^n$, the inequality becomes
+        $$
+        (\sum_{i=1}^na_ib_i)^2\leq(\sum_{i=1}^na_i^2)(\sum_{i=1}^nb_i^2)
+        $$
+        which we are rather familiar with.
+    \end{remark}
+    \hfill
+
+    \begin{thm}
+        \textbf{Triangle Inequality}
+
+        Supppose $u,v\in V$, then
+        $$
+        \norm{u+v}\leq\norm{u}+\norm{v}
+        $$
+        where equality holds iff one of $u$ and $v$ is a nonnegative multiple of the other.
+    \end{thm}
+    \hfill
+
+    \begin{thm}
+        \textbf{Parallelogram Equality}
+
+        Suppose $u,v\in V$. Then
+        $$
+        \norm{u+v}^2+\norm{u-v}^2=2(\norm{u}^2+\norm{v}^2)
+        $$
+    \end{thm}
+    \hfill
+
+    \subsection{Orthonormal Bases}
+    \begin{defi}{Orthonormal}
+        A list of vectors are called orthonormal if each vector in the list has norm $1$ and is orthogonal to all the other vectors in the list. In other words, a list $e_1,\dots,e_m$ is orthonormal if
+        $$
+        \iprod{e_{i},e_j}=\begin{cases}1 & i=j\\0 & i\neq j\end{cases}
+        $$
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        If $e_1,\dots,e_m$ is an orthonormal list of vectors in $V$, then
+        $$
+        \norm{a_1e_1+\cdots+a_me_m}^2=\abs{a_1}^2+\cdots+\abs{a_m}^2
+        $$
+        for all $a_1,\dots,a_m\in\F$. 
+    \end{prop}
+    \begin{remark}
+        This implies that any orthonormal list of vectors is linearly independent.
+    \end{remark}
+    \hfill  
+
+    \begin{defi}{Orthonormal basis}
+        An orthonormal basis of $V$ is an orthonormal list of vectors in $V$ that is also a basis of $V$.
+    \end{defi}
+    \begin{prop}
+        Every orthonormal list of vectors in $V$ with length $\dim V$ is an orthonormal basis of $V$.
+    \end{prop}
+    \hfill
+
+    \begin{prop}\label{6.19}
+        Suppose $e_1,\dots,e_n$ is an orthonormal basis of $V$ and $u,v\in V$. Then 
+        \begin{itemize}
+            \item $v=\iprod{v,e_1}e_1+\cdots+\iprod{v,e_n}e_n$
+            \item $\norm{v}^2=\abs{\iprod{v,e_1}}^2+\cdots+\abs{\iprod{v,e_m}}^2$
+            \item $\iprod{u,v}=\iprod{u,e_1}\overline{\iprod{v,e_1}}+\cdots+\iprod{u,e_n}\overline{\iprod{v,e_n}}$
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{thm}\label{6.20}
+        \textbf{Gram–Schmidt Procedure}
+
+        Suppose $v_1,\dots,v_m$ is a linearly independent list of vectors in $V$. Let $e_1=v_1/\norm{v_1}$. For $i=2,\dots,m$, defined $e_i$ inductively by
+        $$
+        e_i=\frac{v_i-\iprod{v_i,e_1}e_1-\cdots-\iprod{v_i,e_{j-1}}e_{i-1}}{\norm{v_i-\iprod{v_i,e_1}e_1-\cdots-\iprod{v_i,e_{j-1}}e_{i-1}}}
+        $$
+        Then $e_1,\dots,e_m$ is an orthonormal list of vectors in $V$ such that
+        $$
+        \span(v_1,\dots,v_i)=\span(e_1,\dots,e_i)
+        $$
+        for $i=1,\dots,m$
+    \end{thm}
+    \begin{cor}
+        Every finite-dimensional inner product space has an orthonormal basis.
+    \end{cor}
+    \hfill
+
+    \begin{prop}\label{6.22}
+        Suppose $V$ is finite-dimensional. Then every orthonormal list of vectors in $V$ can be extended to an orthonormal basis of $V$.
+    \end{prop}
+    \begin{remark}
+        Referring to \hyperref[2.16]{Proposition 2.16}.
+    \end{remark}
+    \hfill
+
+    \begin{prop}\label{6.23}
+        Suppose $T\in\lmap{V}$. If $T$ has an upper-triangular matrix with respect to some basis of $V$, then $T$ has an upper-triangular matrix with respect to some \textbf{orthonormal} basis of $V$.
+
+        Equivalently, $T$ has an upper-triangular matrix with respect to some orthonormal basis of $V$ iff the minimal polynomial of $T$ equals $(z-\lambda_1)\cdots(z-\lambda_m)$ for some $\lambda_1,\dots,\lambda_m\in\F$.
+        
+    \end{prop}
+    \begin{cor}\label{6.24}
+        \textbf{Schur’s Theorem}
+
+        Suppose $V$ is a finite-dimensional complex vector space and $T\in\lmap{V}$ Then $T$ has an upper-triangular matrix with respect to some orthonormal basis of $V$.
+    \end{cor}
+    \begin{remark}
+        Referring to \hyperref[5.28]{Proposition 5.28}.
+    \end{remark}
+    \hfill
+
+    \begin{thm}\label{6.25}
+        \textbf{Riesz Representation Theorem}
+
+        Suppose $V$ is finite-dimensional and $\varphi$ is a linear functional on $V$. Then there is a unique vector $u\in V$ such that 
+        $$
+        \varphi(v)=\iprod{v,u}
+        $$
+        for all $v\in V$.
+    \end{thm}
+    \begin{remark}
+        Recall that a linear functional on $V$ is the linear map from $V$ to $\F$ as defined in \hyperref[3.61]{Definition 3.61}. Thus for fixed $u\in V$, the inner product $\iprod{v,u}$ is a linear functional.
+
+        Furthermore, we denote $\varphi_{u}(v)=\iprod{v,u}$ for fixed $u$. Then the function $u\mapsto \varphi_{u}$ from $V$ to $V'$ is surjective.
+    \end{remark}   
+    \begin{remark}
+        Consider
+        $$
+        \begin{aligned}
+            \varphi(v)
+            &=\varphi(\iprod{v,e_1}e_1+\cdots+\iprod{v,e_n}e_n)\\
+            &=\iprod{v,e_1}\varphi(e_1)+\cdots+\iprod{v,e_n}\varphi(e_n)\\
+            &=\iprod{v,\overline{\varphi(e_1)}e_1+\cdots+\overline{\varphi(e_n)}e_n}
+        \end{aligned}
+        $$
+    \end{remark}
+    \hfill
+    
+    \subsection{Orthogonal Complements and Minimization Problems}
+    \begin{defi}{Orthogonal complement}\addelement{$\comp{U}$}%
+        If $U$ is a subset of $V$, then the orthogonal complement of $U$, denoted $\comp{U}$, is the set of all vectors in $V$ that are orthogonal to every vector in $U$, i.e.
+        $$
+        \comp{U}=\set{v\in V\mid\iprod{v,u}=0,\,\forall u\in U}
+        $$
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        \textbf{Basic properties of orthogonal complements}
+        \begin{itemize}
+            \item If $U$ is the subset of $V$, then $\comp{U}$ is the subspace of $V$.
+            \item $\comp{\set{0}}=V$
+            \item $\comp{V}=\set{0}$
+            \item If $U$ is a subset of $V$, then $U\cap\comp{U}\subset\set{0}$
+            \item If $U$ and $W$ are subsets of $V$ with $U\subset W$, then $\comp{W}\subset{\comp{U}}$
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        \textbf{Direct sum decomposition}
+
+        Suppose $U$ is a finite-dimensional subspace of $V$. Then
+        $$
+        V=U\oplus\comp{U}
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{prop}\label{6.29}
+        Suppose $V$ is finite-dimensional and $U$ is a subspace of $V$. Then 
+        $$
+        \dim\comp{U}=\dim V-\dim U
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $U$ is a finite-dimensional subspace of $V$, then
+        $$
+        U=\comp{(\comp{U})}
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Orthogonal projection}\addelement{$P_{U}$}%
+        Suppose $U$ is a finite-dimensional subspace of $V$. The orthogonal projection of $V$ onto $U$ is the operator $P_{U}\in\lmap{V}$ defined as:
+
+        For $v\in V$ and $v=u+w$, where $u\in U$ and $w\in\comp{U}$, then $P_{U}(v)=u$
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        \textbf{Properties of $P_{U}$}
+
+        Suppose $U$ is a finite-dimensional subspace of $V$ and $v\in V$, then
+        \begin{itemize}
+            \item $P_{U}\in\lmap{V}$
+            \item $P_{U}(u)=u$ for all $u\in U$
+            \item $P_{U}(w)=0$ for all $w\in\comp{U}$
+            \item $\range P_{U}=U$
+            \item $\Null P_{U}=\comp{U}$
+            \item $v-P_{U}v\in\comp{U}$
+            \item $P_{U}^2=P_{U}$
+            \item $\norm{P_{U}(v)}\leq\norm{v}$
+            \item $\iprod{P_U(v),v}=\norm{P_U(v)}^2$
+            \item For all orthonormal basis $e_1,\dots,e_m$ of $U$,
+            $$
+            P_{U}(v)=\iprod{v,e_1}e_1+\cdots+\iprod{v,e_m}e_m
+            $$
+        \end{itemize}
+    \end{prop}
+    \hfill
+    
+    \begin{prop}
+        Suppose $U$ is a finite-fimensional subspace of $V$, $v\in V$ and $u\in U$. Then
+        $$
+        \norm{v-P_{U}(v)}\leq\norm{v-u}
+        $$
+        where the equility holds iff $u=P_U(v)$.
+    \end{prop}
+    \hfill
+
+    \subsection{Pseudoinverse}
+    \begin{prop}
+        Suppose $V$ is finite-dimensional and $T\in\lmap{V,W}$. Then $T|_{\comp{(\Null T)}}$ is injective and $\range T|_{\comp{(\Null T)}}=\range T$.
+    \end{prop}
+    \begin{remark}
+        $$
+        Tu=Tu'\implies u-u'\in\Null T\implies\iprod{u-u',u-u'}=0\implies u=u'
+        $$
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Pseudoinverse}\addelement{$T^\dagger$}
+        Suppose that $V$ is finite-dimensional and $T\in\lmap{V,W}$. The pseudoinverse $T^\dagger\in\lmap{W,V}$ is the linear map from $W$ to $V$ defined by 
+        $$
+        T^\dagger w=(T|_{\comp{(\Null T)}})^{-1}P_{\range T}w
+        $$
+    \end{defi}
+    \begin{prop}
+        Suppose $V$ is finite-dimensional and $T\in\lmap{V,W}$. Then
+        \begin{itemize}
+            \item If $T$ is invertible, then $T^\dagger=T^{-1}$
+            \item $TT^\dagger=P_{\range T}$
+            \item $T^\dagger T=P_{\comp{(\Null T)}}$
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $V$ is finite-dimensional, $T\in\lmap{V,W}$, $b\in W$. Then
+        \begin{itemize}
+            \item If $x\in V$, then
+            $$
+            \norm{T(T^\dagger b)-b}\leq\norm{Tx-b}
+            $$
+            where equality holds iff $x\in T^\dagger b+\Null T$
+            \item If $x\in T^\dagger b+\Null T$, then
+            $$
+            \norm{T^\dagger b}\leq\norm{x}
+            $$
+            where equality holds iff $x=T^\dagger b$
+        \end{itemize}
+    \end{prop}
+    \begin{remark}
+        Consider $Tx-b=(Tx-T(T^\dagger b))+(T(T^\dagger b)-b)$, where $Tx-T(T^\dagger b)\in\range T$ and $T(T^\dagger b)-b\in\comp{(\range T)}$.
+
+        Consider $x=(x-T^\dagger b)+T^\dagger b$, where $x-T^\dagger b\in\Null T$ and $T^\dagger b\in\comp{(\Null T)}$
+    \end{remark}
+    \begin{remark}
+        This proposition shows that the pseudoinverse is the \textbf{best fit} to the equation $Tx=b$.
+    \end{remark}
+    \hfill
+
+    \section{Operators on Inner Product Spaces}\addclass{Operators on Inner Product Spaces}%
+    Note that we assume $V$ and $W$ to be nonzero finite-dimensional inner product spaces over $\F$ in this section.
+    \subsection{Self-Adjoint and Normal Operators}
+    \begin{defi}{Adjoint}\addelement{$T^*$}%
+        Suppose $T\in\lmap{V,W}$. The adjoint of $T$ is the function $T^*:W\to V$ such that 
+        $$
+        \iprod{Tv,w}=\iprod{v,T^*w}
+        $$
+        for all $v\in V$, $w\in W$
+    \end{defi}
+    \begin{remark}
+        If we fix $w$, then $v\mapsto\iprod{Tv,w}$ is a linear functional on $V$. By \hyperref[6.25]{Riesz Representation Theorem}, there is unique $u\in V$ such that 
+        $$
+        \iprod{Tv,w}=\iprod{v,u}
+        $$
+        thus we define $T^*w=u$ here.
+    \end{remark}
+    \begin{prop}
+        If $F\in\lmap{V,W}$, then $T^*\in\lmap{W,V}$.
+    \end{prop}
+    \hfill
+    
+    \begin{prop}
+        \textbf{Properties of the adjoint}
+        
+        Suppose $T\in\lmap{V,W}$, then
+        \begin{itemize}
+            \item $(S+T)^*=S^*+T^*$ for all $S\in\lmap{V,W}$
+            \item $(\lambda T)^*=\Bar{\lambda}T^*$ for all $\lambda\in\F$
+            \item $(T^*)^*=T$
+            \item $(ST)^*=T^*S^*$ for all $S\in\lmap{W,U}$
+            \item $I^*=I$ where $I$ is the identity operator on $V$
+            \item If $T$ is invertible, then $T^*$ is invertible and $(T^*)^{-1}=(T^{-1})^*$
+        \end{itemize}
+    \end{prop}
+    \begin{remark}
+        If $\F=\R$, then the map $T\to T^*$ is linear from the first two properties.
+    \end{remark}
+    \hfill
+
+    \begin{prop}\label{7.4}
+        Suppose $T\in\lmap{V,W}$, then
+        \begin{itemize}
+            \item $\Null T^*=\comp{(\range T)}$
+            \item $\range T^*=\comp{(\Null T)}$
+            \item $\Null T=\comp{(\range T^*)}$
+            \item $\range T=\comp{(\range T^*)}$
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Conjugate transpose}\addelement{$A^*$}%
+        The conjugate transpose of an \by{m}{n} matrix $A$ is the \by{n}{m} matrix $A^*$ obtained by interchanging the rows and colomns and then taking the complex conjugate of each entry, i.e. 
+        $$
+        (A^*)_{i,j}=\overline{A_{j,i}}
+        $$
+        for all $j=1,\dots,n$ and all $k=1,\dots,m$.
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        Let $T\in\lmap{V,W}$. Suppose $e_1,\dots,e_n$ is an \textbf{orthonormal} basis of $V$ and $f_1,\dots,f_m$ is an orthonormal basis of $W$, then $\lmat{T^*,(f_1,\dots,f_m),(e_1,\dots,e_n)}$ is the conjugate transpose of $\lmat{T,(e_1,\dots,e_n),(f_1,\dots,f_m)}$, i.e. 
+        $$
+        \lmat{T^*}=(\lmat{T})^*
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{remark}
+        There is remarkable relationship and analogy between inner product space and ordinary vector space:
+        \begin{itemize}
+            \item $V$ \& $V'$:
+            consider function $u\mapsto \varphi_u(v)=\iprod{v,u}$ from $V$ to $V'$, as mensioned in \hyperref[6.25]{Riesz Representation Theorem}.
+            
+            \item $U^0$ \& $\comp{U}$:
+            \begin{itemize}
+                \item $U^0=\set{\varphi\in V'\mid\varphi(u)=0}$ corresponds to $\comp{U}=\set{v\in V\mid\iprod{v,u}=0}$.
+                \item $\dim U^0=\dim \comp{U}$, as proved in \hyperref[3.71]{Proposition 3.71} and \hyperref[6.29]{Proposition 6.29}.
+            \end{itemize}
+            
+            \item $T^*$ \& $T'$:
+            \begin{itemize}
+                \item $T^*:W\to V$ corresponds to $T':W'\to V'$, both like representing the basis of $W$ as linear combination of the basis of $V$.
+                \item Furthermore, $\varphi_{T^*w}(v)=\iprod{v,T^*w}=\iprod{Tv,w}=\varphi_w(Tv)=T'(\varphi_w)(v)$
+                \item $\Null T^*=\comp{(\range T)}$ corresponds to $\Null T'=(\range T)^0$, as proved in \hyperref[7.4]{Proposition 7.4} and \hyperref[3.72]{Proposition 3.72}.
+                \item $\range T^*=\comp{(\Null T)}$ corresponds to $\range T'=(\Null T)^0$, as proved in \hyperref[7.4]{Proposition 7.4} and \hyperref[3.74]{Proposition 3.74}.
+            \end{itemize}
+        \end{itemize}
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Self-adjoint}
+        An operator $T\in\lmap{V}$ is called self-adjoint if $T=T^*$. 
+    \end{defi}
+    \begin{remark}
+        Suppose $e_1,\dots,e_n$ is an orthonormal basis of $V$, then $T$ is self-adjoint iff $\lmat{T}=(\lmat{T})^*$.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Every eigenvalue of a self-adjoint operator is real.
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $V$ is a complex inner product space and $T\in\lmap{V}$. Then
+        $$
+        \forall v\in V,\,\iprod{v,T(v)}=0\iff T=0
+        $$
+    \end{prop}
+    \begin{remark}
+        Consider
+        $$
+        \iprod{Tu,w}=\frac{\iprod{T(u+w),u+w}-\iprod{T(u-w),u-w}}{4}+\frac{\iprod{T(u+iw),u+iw}-\iprod{T(u-iw),u-iw}}{4}i
+        $$
+    \end{remark}
+    \hfill
+
+    \begin{prop}\label{7.10}
+        Suppose $V$ is a complex inner product space and $T\in\lmap{V}$. Then $T$ is self-adjoint $\iff$ $\forall v\in V,\,\iprod{Tv,v}\in\R$.
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $T$ is a self-ajoint operator on $V$. Then
+        $$
+        \forall v\in V,\,\iprod{Tv,v}=0\iff T=0
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Normal}
+        An operator on an inner product space is called normal if it commutes with its adjoint. In other words, $T\in\lmap{V}$ is normal if
+        $$
+        TT^*=T^*T
+        $$
+    \end{defi}
+    \hfill
+
+    \begin{prop}\label{7.13}
+        Suppose $T\in\lmap{V}$, then $T$ is normal iff for all $v\in V$,
+        $$
+        \norm{Tv}=\norm{T^*v}
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ is normal. Then
+        \begin{itemize}
+            \item $\Null T=\Null T^*$
+            \item $\range T=\range T^*$
+            \item $V=\Null T\oplus\range T$
+            \item $T-\lambda I$ is normal for every $\lambda\in\F$
+            \item $Tv=\lambda v\iff T^*v=\Bar{\lambda}v$ for $v\in V$ and $\lambda\in\F$.
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ is normal. Then eigenvectors of $T$ corresponding to distinct eigenvalues are orthogonal.
+    \end{prop}
+    \begin{remark}
+        Consider
+        $$
+        \begin{aligned}
+            (\lambda_1-\lambda_2)\iprod{v_1,v_2}
+            &=\iprod{\lambda_1v_1,v_2}-\iprod{v_1,\Bar{\lambda_2}v_2}\\
+            &=\iprod{Tv_1,v_2}-\iprod{v_1,T^*v_2}\\
+            &=0
+        \end{aligned}
+        $$
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $\F=\C$ and $T\in\lmap{V}$. Then $T$ is normal iff there exist commuting self-adjoint operators $A$ and $B$ such that $T=A+iB$.
+    \end{prop}
+    \begin{remark}
+        Consider
+        $$
+        A=\frac{T+T^*}{2}\quad\text{and}\quad B=\frac{T-T^*}{2i}
+        $$
+    \end{remark}
+    \begin{remark}
+        This provides an analogy between $\lmap{V}$ and $\C$.
+    \end{remark}
+    \hfill
+
+    \subsection{Spectral Theorem}
+    \begin{prop}\label{7.17}
+        Suppose $T\in\lmap{V}$ is self-adjoint and $b,c\in\R$ are such that $b^2<4c$. Then
+        $$
+        T^2+bT+cI
+        $$
+        is an invertible operator.
+    \end{prop}
+    \begin{remark}
+        There is analogy between real numbers and self-ajoint operators.
+    \end{remark}
+    \hfill
+
+    \begin{prop}\label{7.18}
+        Suppose $T\in\lmap{V}$ is self-adjoint. Then the minimal polynomial of $T$ equals $(z-\lambda_1)\cdots(z-\lambda_m)$ for some $\lambda_1,\dots,\lambda_m\in\R$.
+    \end{prop}
+    \begin{remark}
+        For $\F=\C$ it's trivial.
+        
+        For $\F=\R$, $T^2+bT+cI$ is invertible means that $\Null(T^2+bT+cI)=\set{0}$, meaning that $\nexists v\in V$ such that $(T^2+bT+cI)v=0$, meaning that $(T-\lambda_1I)\cdots(T-\lambda_mI)(T^2+bT+cI)=0\implies(T-\lambda_1I)\cdots(T-\lambda_mI)=0$. In this way, we can cancel out all the terms like $T^2+bT+cI$.
+    \end{remark}
+    \begin{remark}
+        A more direct method is to multiply the inverse of $T^2+bT+cI$ (as it's invertible) on both sides to obtain $(T-\lambda_1I)\cdots(T-\lambda_mI)(T^2+bT+cI)=0\implies(T-\lambda_1I)\cdots(T-\lambda_mI)=0$.
+    \end{remark}
+    \begin{remark}
+        This implies every self-ajoint operator has an eigenvalue.
+    \end{remark}
+    \begin{remark}
+        This implies every self-ajoint operator has an upper-triangular matrix with respect to some basis of $V$.
+    \end{remark}
+    \hfill
+
+    \begin{thm}\label{7.19}
+        \textbf{Real spectral theorem}
+
+        Suppose $\F=\R$ and $T\in\lmap{V}$. Then the following are equivalent
+        \begin{itemize}
+            \item $T$ is self-ajoint.
+            \item $T$ has a diagonal matrix with respect to some orthonormal basis of $V$.
+            \item $V$ has an orthonormal basis consisting of eigenvectors of $T$.
+        \end{itemize}
+    \end{thm}
+    \begin{remark}
+        \hyperref[7.18]{Proposition 7.18} indicates that the minimal polynomial of any self-adjoint operator has the form of $(z-\lambda_1)\cdots(z-\lambda_m)$, then \hyperref[6.23]{Proposition 6.23} shows that $T$ has an upper-triangular matrix with respect to some orthonormal basis of $V$. Then by considering the definition of self-adjoint, we can directly prove the upper-triangular matrix is a diagonal matrix. 
+    \end{remark}
+    \begin{remark}
+        Self-ajoint operators are diagonalizable further implies that all $\lambda_i$ in \hyperref[7.18]{Proposition 7.18} are distinct.
+    \end{remark}
+    \hfill
+
+    \begin{thm}
+        \textbf{Complex spectral theorem}
+        
+        Suppose $\F=\C$ and $T\in\lmap{V}$. Then the following are equivalent
+        \begin{itemize}
+            \item $T$ is normal
+            \item $T$ has a diagonal matrix with respect to some orthonormal basis of $V$.
+            \item $V$ has an orthonormal basis consisting of eigenvectors of $T$.
+        \end{itemize}
+    \end{thm}
+    \begin{remark}
+        Similarly, \hyperref[6.24]{Schur’s Theorem} shows that any operator on complex vector space has an upper-triangular matrix with respect to some othonormal basis. Then considering $T$ is normal, we can actually prove that the upper-triangular matrix is diagonal, by expressing $\norm{Te_i}$ and $\norm{T^*e_i}$ and by \hyperref[7.13]{Proposition 7.13}.
+    \end{remark}
+    \hfill
+
+    \subsection{Positive Operators}
+    \begin{defi}{Positive operator}
+        An operator $T\in\lmap{V}$ is called positive if $T$ is self-adjoint and
+        $$
+        \iprod{Tv,v}\geq0
+        $$
+        for all $v\in V$.
+    \end{defi}
+    \begin{remark}
+        If $V$ is complex vector space, then by \hyperref[7.10]{Proposition 7.10}, $\iprod{Tv,v}\geq0\implies T$ is self-adjoint.
+    \end{remark}
+    \hfill
+
+    \begin{eg}
+        \hfill
+        
+        \begin{itemize}
+            \item If $U$ is a subspace of $V$, then the othogonal projection $P_U$ is a positive operator.
+            \item If $T\in\lmap{V}$ is self-adjoint and $b,c\in\R$ such that $b^2<4c$, then $T^2+bT+cI$ is a positive operator.
+        \end{itemize}
+    \end{eg}
+    \hfill
+
+    \begin{defi}{Square root}
+        An operator $R$ is called a square root of an operator $T$ if $R^2=T$.
+    \end{defi}
+    \begin{prop}\label{7.24}
+        Suppose $T\in\lmap{V}$. Then the following are equivalent
+        \begin{itemize}
+            \item $T$ is a positive operator.
+            \item $T$ is self-adjoint and all eigenvalues of $T$ are nonnegative.
+            \item With respect to some orthonormal basis of $V$, the matrix of $T$ is a diagonal matrix with only nonnegative numbers on the diagonal.
+            \item $T$ has a positive square root.   
+            \item $T$ has a self-adjoint square root.
+            \item $T=R^*R$ for some $R\in\lmap{V}$.
+        \end{itemize}
+    \end{prop}
+    \begin{remark}
+        Here \textbf{“nonnegative”} means \textbf{real and nonnegative}.
+    \end{remark}
+    \begin{remark}
+        There is an anology between characteristics of operators and complex numbers: For $z\in\C$, $z$ is a nonnegative complex number (i.e. $z$ is nonnegative real number) is equivalent to:
+        \begin{itemize}
+            \item $z$ has a nonnegative square root.
+            \item $z$ has a real square root. (Recall that there's an anology between real numbers and self-adjoint operators, as mensioned in \hyperref[7.17]{Proposition 7.17})
+            \item $\exists w\in\C$, $z=\Bar{w}w$.
+        \end{itemize}
+        These three neccessary and sufficient conditions correspond to the last three points in \hyperref[7.24]{Proposition 7.24}.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Every positive operator on $V$ has a unique positive square root.
+    \end{prop}
+    \begin{notation}{$\sqrt{T}$}
+        For $T$ a positive operator, $\sqrt{T}$ denotes the unique positve square root of $T$.
+    \end{notation}
+
+    \subsection{Isometries, Unitary Operators, and Matrix Factorization}
+    \begin{defi}{Isometry}
+        A linear map $S\in\lmap{V,W}$ is called an isometry if
+        $$
+        \norm{Sv}=\norm{v}
+        $$
+        for all $v\in V$. In other words, an isometry is a linear map that preserves norms.
+    \end{defi}
+    \begin{remark}\label{7.25r}
+        Easy to prove that every isometry is injective.
+    \end{remark}
+    \begin{prop}
+        Suppose $S\in\lmap{V,W}$. Suppose $e_1,\dots,e_n$ is an orthonormal basis of $V$ and $f_1,\dots,f_m$ is an orthonormal basis of $W$. Then the following are equivalent.
+        \begin{itemize}
+            \item $S$ is an isometry.
+            \item $S^*S=I$
+            \item $\iprod{Su,Sv}=\iprod{u,v}$ for all $u,v\in V$
+            \item $Se_1,\dots,Se_n$ is an orthonormal list in $W$
+            \item The columns of $\lmat{S,(e_1,\dots,e_n),(f_1,\dots,f_m)}$ form an orthonormal list in $\F^m$ with respect to the Euclidean inner product.
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Unitary operator}%酉算子
+        An operator $S\in\lmap{V}$ is called unitary if $S$ is an invertible isometry.
+    \end{defi}
+    \begin{remark}
+        Note that every isometry is injective, as mensioned \hyperref[7.25r]{above}. We also know that for all operators on finite-dimensional vector spaces, injectivity is equivalent to invertibility. Thus here invertible means $V$ is finite-dimensional. 
+    \end{remark}
+    \begin{prop}\label{7.30}
+        Suppose $S\in\lmap{V}$. Suppose $e_1,\dots,e_n$ is an orthonormal basis of $V$. Then the following are equivalent
+        \begin{itemize}
+            \item $S$ is a unitary operator
+            \item $SS^*=S^*S=I$
+            \item $S$ is invertible and $S^{-1}=S^*$
+            \item $Se_1,\dots,Se_n$ is an orthonormal basis of $V$
+            \item The rows of $\lmat{S,(e_1,\dots,e_n)}$ form an orthonormal list in $\F^n$ with respect to the Euclidean inner product.
+            \item $S^*$ is a unitary operator.
+        \end{itemize}
+    \end{prop}
+    \begin{remark}
+        Suppose $\lambda$ is an eigenvalue of a unitary operator. Then $\abs{\lambda}=1$.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $\F=\C$ and $S\in\lmap{V}$. Then the following are equivalent.
+        \begin{itemize}
+            \item $S$ is a unitary operator.
+            \item There is an orthonormal basis $V$ consisting of eigenvalues of $S$ whose corresponding eigenvalues all have absolute value $1$.
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Unitary matrix}
+        An \by{n}{n} matrix is called unitary if its columns form an orthonormal list in $\F^n$.
+    \end{defi}
+    \begin{prop}
+        Suppose $Q$ is an \by{n}{n} matrix. Then the following are equivalent.
+        \begin{itemize}
+            \item $Q$ is a unitary matrix
+            \item The rows of $Q$ forms an orthonormal list in $\F^n$
+            \item $\norm{Qv}=\norm{v}$ for every $v\in\F^n$
+            \item $Q^*Q=QQ^*=I$.
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        \textbf{QR factorization}
+
+        Suppose $A$ is a square matrix with linearly independent columns. Then there exists unique matrices $Q$ and $R$ such that $Q$ is unitary, $R$ is upper-triangular with only positive numbers on its diagonal, and that
+        $$
+        A=QR
+        $$
+    \end{prop}
+    \begin{remark}
+        QR factorization can be used to solve the equation system rapidly since the inverse of $Q$ is $Q^*$, which is the conjugate transpose of $Q$.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        A self-adjoint operator $T\in\lmap{V}$ is a positive invertible operator iff $\iprod{Tv,v}>0$ for every nonzero $v\in V$.
+    \end{prop}
+    \begin{defi}{Positive definite}
+        A matrix $B\in\F^{n,n}$ is called positive difinite if $B^*=B$ and 
+        $$
+        \iprod{Bx,x}>0
+        $$
+        for every nonzero $x\in\F^n$.
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        \textbf{Cholesky factorization}
+
+        Suppose $B$ is a positive definite matrix. Then there exists a unique upper-triangular matrix $R$ with only positive numbers on its diagonal such that
+        $$
+        B=R^*R
+        $$
+    \end{prop}
+    \begin{remark}
+        Conside \hyperref[7.24]{Proposition 7.24}, there is invertible $A$ such that $B=A^*A$, then make QR factorization to $A$, obtaining 
+        $$
+        B=R^*Q^*QR=R^*R
+        $$
+    \end{remark}
+    \hfill
+
+    \subsection{Singular Value Decomposition}
+    \begin{prop}
+        Suppose $T\in\lmap{V,W}$, then
+        \begin{itemize}
+            \item $T^*T$ is a positive operator on $V$
+            \item $\Null T^*T=\Null T$
+            \item $\range T^*T=\range T^*$
+            \item $\dim\range T=\dim \range T^*=\dim\range T^*T$
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Singular values}
+        Suppose $T\in\lmap{V,W}$. The singular values of $T$ are the nonnegative square roots of the eigenvalues of $T^*T$, listed in decreasing order, each included as many times as the dimensions of the corresponding eigenspaces of $T^*T$.
+    \end{defi}
+    \begin{prop}
+        Suppose $T\in\lmap{V,W}$. Then
+        \begin{itemize}
+            \item $T$ is injective $\iff0$ is not a singular value of $T$
+            \item the number of positive sigular values of $T$ equals $\dim\range T$.
+            \item $T$ is surjective $\iff$ number of singular values of $T$ equals $\dim W$.
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $S\in\lmap{V,W}$. Then $S$ is an isometry iff all sigular values of $S$ equal $1$.
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        \textbf{Singular value decomposition (SVD)}
+
+        Suppose $T\in\lmap{V,W}$ and the positive singular values for $T$ are $s_1,\dots,s_m$. Then there exist orthonormal lists $e_1,\dots,e_m$ in $V$ and $f_1,\dots,f_m$ in $W$ such that
+        $$
+        Tv=s_1\iprod{v,e_1}f_1+\cdots+s_m\iprod{v,e_m}f_m
+        $$
+        for every $v\in V$.
+    \end{prop}
+    \begin{remark}
+        Here
+        $$
+        Te_k=\begin{cases}s_kf_k & 1\leq k\leq m\\0 & m<k\leq\dim V\end{cases}
+        $$
+        Then, we can extend the orthonormal lists $(e_1,\dots,e_m)$ and $(f_1,\dots,f_m)$ to orthonormal bases $(e_1,\dots,e_{\dim V})$ and $(f_1,\dots,f_{\dim W})$ by \hyperref[6.22]{Proposition 6.22}. Therefore, wtih respect to these bases, the matrix of $T$ has the simple form
+        $$
+        \lmat{T}_{i,j}=\begin{cases}s_k & 1\leq i=j\leq m\\ 0 & \text{otherwise}\end{cases}
+        $$
+        Hence we can claim that every operator has a “diagonal matrix” with respect to appropriate orthonormal bases.
+    \end{remark}
+    \begin{remark}
+        Note that this does not mean that every operator is \hyperref[5.35]{“diagonalizable”} since here the orthonormal bases of the domain and range can be distinct, even when the domain equals the range.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        \textbf{SVD of adjoint and pseudoinverse}
+
+        Suppose $T\in\lmap{V,W}$ and positive singular values of $T$ are $s_1,\dots,s_m$. Suppose $e_1,\dots,e_m$ and $f_1,\dots,f_m$ are orthonormal lists in $V$ and $W$ such that
+        $$
+        Tv=s_1\iprod{v,e_1}f_1+\cdots+s_m\iprod{v,e_m}f_m
+        $$
+        for every $v\in V$, then we have
+        $$
+        T^*w=s_1\iprod{w,f_1}e_1+\cdots+s_m\iprod{w,f_m}e_m
+        $$
+        and
+        $$
+        T^\dagger w=\frac{\iprod{w,f_1}}{s_1}e_1+\cdots+\frac{\iprod{w,f_m}}{s_m}e_m
+        $$
+        for every $w\in W$.
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $A$ is an \by{M}{n} matrix of rank $m\geq1$. Then there exist an \by{M}{m} matrix $B$ with orthonormal columns, an \by{m}{m} diagonal matrix $D$ with positive numbers on the diagonal, and an \by{n}{m} matrix $C$ with orthonormal columns such that
+        $$
+        A=BDC^*
+        $$
+    \end{prop}
+    \begin{remark}
+        \hfill
+    
+        \begin{itemize}
+            \item The columns of $B$ are $f_1,\dots,f_m$
+            \item The diagonal entries of $D$ are $s_1,\dots,s_m$
+            \item The columns of $C$ are $e_1,\dots,e_m$
+        \end{itemize}
+    \end{remark}
+    \hfill
+
+    \subsection{Consequences of Singular Value Decomposition}
+    \begin{prop}\label{7.43}
+        Suppose $T\in\lmap{V,W}$ and $s_1$ be the largest singular value of $T$. Then
+        $$
+        \norm{Tv}\leq s_1\norm{v}
+        $$
+        for all $v\in V$
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Norm of a linear map}\addelement{$\norm{T}$}
+        Suppose $T\in\lmap{V,W}$, then the norm of $T$, denoted by $\norm{T}$, is defined by
+        $$
+        \norm{T}=\max\set{\norm{Tv}\mid v\in V, \norm{v}\leq1}
+        $$
+    \end{defi}
+    \begin{remark}
+        We know from \hyperref[7.43]{Proposition 7.43} that $\norm{Tv}\leq s_1$ if $\norm{v}\leq1$. We know also that $\norm{Te_1}=\norm{s_1f_1}=s_1$. Thus $\norm{T}$ is actually the largest singular value of $T$.
+    \end{remark}
+    \begin{remark}
+        Under such definition, we have
+        $$
+        \norm{Tv}\leq\norm{T}\norm{v}
+        $$
+    \end{remark}
+    \begin{prop}
+        Suppose $T\in\lmap{V,W}$, then
+        \begin{itemize}
+            \item $\norm{T}\geq0$
+            \item $\norm{T}=0\iff T=0$
+            \item $\norm{\lambda T}=\abs{\lambda}\norm{T}$ for all $\lambda\in\F$
+            \item $\norm{S+T}\leq\norm{S}+\norm{T}$ for all $S\in\lmap{V,W}$
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V,W}$, then $\norm{T^*}=\norm{T}$.
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V,W}$ and $s_1\geq\cdots\geq s_m$ are the positive singular values of $T$. Suppose $1\leq k\leq m$, then
+        $$
+        \min\set{\norm{T-S}\mid S\in\lmap{V,W},\dim\range S\leq k}=s_{k+1}
+        $$
+        Furthermore, if
+        $$
+        Tv=s_1\iprod{v,e_1}f_1+\cdots+s_m\iprod{v,e_m}f_m 
+        $$
+        is the SVD of $T$ and $T_k\in\iprod{V,W}$ is defined by
+        $$
+        T_kv=s_1\iprod{v,e_1}f_1+\cdots+s_k\iprod{v,e_k}f_k
+        $$
+        for each $v\in V$, then $\dim\range T_k=k$ and $\norm{T-T_k}=s_{k+1}$
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V}$. Then there exists a unitary operator $S\in\lmap{V}$ such that
+        $$
+        T=S\sqrt{T^*T}
+        $$
+    \end{prop}
+    \begin{remark}
+        An anology of $z=\frac{z}{\abs{z}}\sqrt{\Bar{z}z}$ for every nonzero $z\in\C$.
+    \end{remark}
+    \begin{remark}
+        If the SVD of $T$ is
+        $$
+        Tv=s_1\iprod{v,e_1}f_1+\cdots+s_m\iprod{v,e_m}f_m
+        $$
+        Then
+        $$
+        T*Tv=s_1^2\iprod{v,e_1}e_1+\cdots+s_m^2\iprod{v,e_m}e_m
+        $$
+        and
+        $$
+        \sqrt{T*T}v=s_1\iprod{v,e_1}e_1+\cdots+s_m\iprod{v,e_m}e_m
+        $$
+        Then let $S$ be
+        $$
+        Sv=\iprod{v,e_1}f_1+\cdots+\iprod{v,e_n}f_n
+        $$
+        can work.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Ball}\addelement{$B$}
+        The ball in $V$ of radius $1$ centered at $0$ denoted by $B$, is defined by
+        $$
+        B=\set{v\in V\mid \norm{v}<1}
+        $$
+    \end{defi}
+    \begin{defi}{Ellipsoid \& Principal axes}\addelement{$s_1f_1,\dots,s_nf_n$}
+        Suppose that $f_1,\dots,f_n$ is an orthonormal basis of $V$ and $s_1,\dots,s_n\in\R^+$. Then the ellipsoid with principle axes $s_1f_1,\dots,s_nf_n$, denoted by $E(s_1f_1,\dots,s_nf_n)$, is defined by
+        $$
+        E(s_1f_1,\dots,s_nf_n)=\set{v\in V\;\middle|\;\frac{\abs{\iprod{v,f_1}}^2}{s_1^2}+\cdots+\frac{\abs{\iprod{v,f_n}}^2}{s_n^2}<1}
+        $$
+    \end{defi}
+    \begin{remark}
+        By the second point of \hyperref[6.19]{Proposition 6.19}, we have
+        $$
+        E(f_1,\dots,f_n)=B
+        $$
+    \end{remark}
+    \hfill
+
+    \begin{notation}{$T(\Omega)$}
+        For $T$ a function defined on $V$ and $\Omega\subset V$, $T(\Omega)$ is defined by
+        $$
+        T(\Omega)=\set{Tv\mid v\in\Omega}
+        $$
+    \end{notation}
+    \begin{remark}
+        $T(V)=\range T$
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ is invertible, then $T(B)$ is an ellipsoid in $V$.
+    \end{prop}
+    \begin{remark}
+        Consider the SVD of $T$.
+    \end{remark}
+    \begin{remark}
+        Invertible $\implies s_i>0$
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ is invertible and $E$ is an ellipsoid in $V$. Then $T(E)$ is an ellipsoid in $V$.
+    \end{prop}
+    \begin{remark}
+        Consider $E=S(B)$ for an invertible $S\in\lmap{V}$.
+    \end{remark}
+    \hfill
+
+    \begin{notation}{$P(v_1,\dots,v_n)$}
+        Suppose $v_1,\dots,v_n$ is a basis of $V$. Then
+        $$
+        P(v_1,\dots,v_n)=\set{a_1v_1+\cdots+a_nv_n\mid a_1,\dots,a_n\in(0,1)}
+        $$
+    \end{notation}
+    \begin{defi}{Parallelepiped \& Edge}
+        A parallelepiped is a set of the form $u+P(v_1,\dots,v_n)$ for some $u\in V$, where $v_1,\dots,v_n$ are called the edges of this parallelepiped.
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        Suppose $u\in V$ and $v_1,\dots,v_n$ is a basis of $V$. Suppose $T\in\lmap{V}$ is invertible. Then
+        $$
+        T(u+P(v_1,\dots,v_n))=Tu+P(Tv_1,\dots,Tv_n)
+        $$
+        is also a parallelepiped.
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Box}
+        A box in $V$ is a set of the form 
+        $$
+        u+P(r_1e_1+\cdots+r_ne_n)
+        $$
+        where $u\in V$ and $r_1,\dots,r_n$ are positive numbers and $e_1,\dots,e_n$ is an orthonormal basis of $V$.
+    \end{defi}
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ is invertible and has the singular value decomposition
+        $$
+        Tv=s_1\iprod{v,e_1}f_1+\cdots+s_m\iprod{v,e_m}f_m
+        $$
+        Then
+        $$
+        T(u+P(r_1e_1+\cdots+r_ne_n))=Tu+P(r_1s_1f_1,\dots,r_ns_nf_n)
+        $$
+        is also a box.
+    \end{prop}
+    \hfill
+	
+    \begin{defi}{Volume of a box}
+        Suppose $\F=\R$. If $u\in V$ and $r_1,\dots,r_n$ are positive numbers and $e_1,\dots,e_n$ is an orthonormal basis of $V$, then
+        $$
+        \volume(u+P(r_1e_1+\cdots+r_ne_n))=r_1\cdots r_n
+        $$
+    \end{defi}
+    \begin{defi}{Volume}\addelement{$\volume\Omega$}
+        Suppose $\F=\R$. Then the volume of $\Omega$, denoted by $\volume\Omega$, is approximately the sum of the volumes of a collection of disjoint boxes that approximate $\Omega$.
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        Suppose $\F=\R$, $T\in\lmap{V}$ is invertible, $\Omega\subset V$. Then 
+        $$
+        \frac{\volume T(\Omega)}{\volume \Omega}=\text{product of singular values of } T
+        $$
+    \end{prop}
+    \hfill
+    
+    \begin{prop}
+    	Suppose $T\in\lmap{V}$ is a normal operator with eigenvalues $\lambda_1,\dots,\lambda_m$. Then
+		\begin{itemize}
+			\item $T$ is invertible $\iff\lambda_i\neq0$
+			\item $T$ is self-adjoint $\iff\lambda_i\in\R$
+			\item $T$ is positive $\iff\lambda_i\in[0,\infty)$
+			\item $T$ is unitary $\iff\abs{\lambda_i}=1$
+			\item $\norm{T}<1\iff\abs{\lambda_i}<1$
+		\end{itemize}    	
+    \end{prop}
+    \hfill
+    
+    \section{Operators on Complex Vector Spaces}\addclass{Operators on Complex Vector Spaces}
+    \subsection{Generalized Eigenvectors and Nilpotent Operators}
+    \begin{prop}
+    	Suppose $T\in\lmap{V}$, then
+    	$$
+    	\set{0}=\Null T^0\subset\Null T^1\subset\Null T^2\subset\cdots
+    	$$
+    \end{prop}
+    \hfill
+    
+    \begin{prop}
+    	Suppose $T\in\lmap{V}$ and $m\in\N$ such that
+    	$$
+    	\Null T^m=\Null T^{m+1}
+    	$$
+    	Then
+    	$$
+    	\Null T^m=\Null T^{m+k}
+    	$$
+    	for all $k\in\N$.
+    \end{prop}
+    \begin{remark}
+    	$$
+    	T^{m+2}v=0\implies Tv\in\Null T^{m+1}=\Null T^m\implies T^{m+1}v=0\implies \Null T^{m+2}=\Null T^{m+1}
+    	$$
+    	thus proved inductively.
+    \end{remark}
+    \hfill
+    
+    \begin{prop}
+    	Suppose $T\in\lmap{V}$, then 
+    	$$
+    	\Null T^{\dim V}=\Null T^{\dim V+1}=\Null T^{\dim V+2}=\cdots
+    	$$
+    \end{prop}
+    \begin{remark}
+    	$$
+    	\Null T^m\subsetneq\Null T^{m+1}\implies\dim\Null T^{m+1}>\dim\Null T^m
+    	$$
+    \end{remark}
+    \hfill
+    
+    \begin{prop}
+    	Suppose $T\in\lmap{V}$, then
+    	$$
+    	V=\Null T^{\dim V}\oplus\range T^{\dim V}
+    	$$
+    \end{prop}
+    \hfill
+    
+    \begin{defi}{Generalized eigenvector}
+    	Suppose $T\in\lmap{V}$ and $\lambda$ is an eigenvalue of $T$. Then $v\in V$ is called a generalized eigenvector of $T$ corresponding to $\lambda$ iff $v\neq0$ and
+    	$$
+    	(T-\lambda I)^{\dim V}v=0
+    	$$
+    \end{defi}
+    \hfill
+    
+    \begin{prop}
+    	Suppose $\F=\C$ and $T\in\lmap{V}$, then there is a basis of $V$ consisting of generalized eigenvectors of $T$.
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V}$. Then each generalized eigenvector of $T$ correspond to only one eigenvalue of $T$.
+    \end{prop}
+    \begin{remark}
+        Consider the binomial expansion.
+    \end{remark}
+
+    \begin{prop}\label{8.8}
+        Suppose that $T\in\lmap{V}$, then every list of generalized eigenvectors of $T$ corresponding to distinct eigenvalues of $T$ is linearly independent.
+    \end{prop}
+    \begin{remark}
+        Referring to \hyperref[5.6]{Proposition 5.6}.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Nilpotent}
+        An operator is called nilpotent if some power of it equals $0$.
+    \end{defi}
+    \begin{remark}
+        Suppose $T\in\lmap{V}$, then $T$ is nilpotent iff $T^{\dim V}=0$
+    \end{remark}
+    \hfill
+    
+    \begin{prop}
+        Suppose $T\in\lmap{V}$, then
+        \begin{itemize}
+            \item $T$ is nilpotent $\implies0$ is the only eigenvalue of $T$.
+            \item $\F=\C$ and $0$ is the only eigenvalue of $T\implies T$ is nilpotent.
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V}$, then the following are equivalent.
+        \begin{itemize}
+            \item $T$ is nilpotent.
+            \item The minimal polynomial of $T$ is $z^m$ for some positive integer $m$.
+            \item There is a basis of $V$ with respect to which the matrix of $T$ has the form
+            $$
+            \begin{pmatrix}
+                0 & & *\\
+                 & \ddots & \\
+                0 & & 0
+            \end{pmatrix}
+            $$
+            where all entries on and below the diagonal equal $0$.  
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \subsection{Generalized Eigenspace Decomposition}
+    \begin{defi}{Generalized eigenspace}\addelement{$G(\lambda,T)$}
+        Suppose $T\in\lmap{V}$. The generalized eigenspace of $T$ corresponding to $\lambda$, denoted by $G(\lambda,T)$, is defined by
+        $$
+        G(\lambda,T)=\Null (T-\lambda I)^{\dim V}
+        $$
+        In other words, $G(\lambda,T)$ is the set of generalized eigenvectors of $T$ corresponding to $\lambda$, along with the $0$ vector.
+    \end{defi}
+    \hfill
+    
+    \begin{prop}\label{8.13}
+        \textbf{Generalized Eigenspace Decomposition}
+
+        Suppose $\F=\C$ and $T\in\lmap{V}$. Let $\lambda_1,\dots,\lambda_m$ be the distinct eigenvalues of $T$, then
+
+        \begin{itemize}
+            \item $G(\lambda_k,T)$ is invariant under $T$, for all $k\in\set{1,\dots,m}$
+            \item $(T-\lambda_k I)|_{G(\lambda_k,T)}$ is nilpotent for all $k\in\set{1,\dots,m}$
+            \item $V=G(\lambda_1,T)\oplus\cdots\oplus G(\lambda_m,T)$
+        \end{itemize}
+    \end{prop}
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ and $\lambda_1,\dots,\lambda_m$ are the distinct eigenvalues of $T$, then
+        $$
+        V=G(\lambda_1,T)\oplus\cdots\oplus G(\lambda_m,T)
+        $$
+        iff the minimal polynomial of $T$ equals
+        $$
+        (z-\lambda_1)^{k_1}\cdots(z-\lambda_m)^{k_m}
+        $$
+        for some $k_1,\dots,k_m\in\Z^+$
+    \end{prop}
+    \begin{remark}
+        $G(\lambda_1,T)+\cdots+G(\lambda_m,T)$ is a direct sum simply from \hyperref[8.8]{Proposition 8.8}. 
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Multiplicity}
+        Suppose $T\in\lmap{V}$. Then the multiplicity of an eigenvalue $\lambda$ of $T$ equals
+        $$
+        \dim G(\lambda,T)=\dim\Null(T-\lambda I)^{\dim V}
+        $$
+    \end{defi}
+    \begin{prop}
+        Suppose $\F=\C$ and $T\in\lmap{V}$. Then the sum of multiplicity of all eigenvalues of $T$ equals $\dim V$.
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Characteristic polynomial on $\C$}
+        Suppose $\F=\C$ and $T\in\lmap{V}$. Let $\lambda_1,\dots,\lambda_m$ denote the distinct eigenvalues of $T$, with multiplicities $d_1,\dots,d_m$. Then the characteristic polynomial of $T$ is a polynomial
+        $$
+        (z-\lambda_1)^{d_1}\cdots(z-\lambda_m)^{d_m}
+        $$
+    \end{defi}
+    \hfill
+
+    \begin{thm}
+        \textbf{Cayley-Hamilton Theorem}
+
+        Suppose $\F=\C$, $T\in\lmap{V}$, and $q$ is the characteristic polynomial of $T$, then $q(T)=0$.
+    \end{thm}
+    \begin{remark}
+        This is equivalent to say the characteristic polynomial is a multiple of the minimal polynomial.
+    \end{remark}
+    \hfill
+
+    \begin{prop}\label{8.19}
+        Suppose $\F=\C$ and $T\in\lmap{V}$. Suppose $v_1,\dots,v_n$ is a basis of $V$ such that $\lmat{T,(v_1,\dots,v_n)}$ is upper triangular. Then the number of times that each eigenvalue of $\lambda$ of $T$ appears on the diagonal of $\lmat{T,(v_1,\dots,v_n)}$ equals the multiplicity of $\lambda$ as an eigenvalue of $T$.
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Block diagonal matrix}
+        A block diagonal matrix is a square matrix of the form
+        $$
+        \begin{pmatrix}
+            A_1 & & 0\\
+             &\ddots& \\
+             0 & & A_m
+        \end{pmatrix}
+        $$
+        where $A_1,\dots,A_m$ are square matrices lying along the diagonal and all other entries of the matrix equal $0$.
+    \end{defi}
+    \begin{eg}
+        For example, a block diagonal matrix can be
+        $$
+        \begin{pmatrix}
+        \begin{pmatrix}4\end{pmatrix}&
+        \begin{matrix}0 & 0 \\\end{matrix}\\
+        \begin{matrix}0 \\ 0\end{matrix}&
+        \begin{pmatrix}6 & 3 \\-1 & 2\end{pmatrix}
+        \end{pmatrix}
+        $$
+    \end{eg}
+    \hfill
+    
+    \begin{prop}
+        Suppose $\F=\C$ and $T\in\lmap{V}$. Let $\lambda_1,\dots,\lambda_m$ be the distinct eigenvalues of $T$, with multiplicities $d_1,\dots,d_m$. Then there is a basis of $V$ with respect to which $T$ has a block matrix of the form
+        $$
+        \begin{pmatrix}
+            A_1 & & 0\\
+             &\ddots& \\
+             0 & & A_m
+        \end{pmatrix}
+        $$
+        where each $A_k$ is a \by{d_k}{d_k} upper-triangular matrix of the form
+        $$
+        A_k=\begin{pmatrix}
+            \lambda_k & & *\\
+             &\ddots& \\
+             0 & & \lambda_k
+            \end{pmatrix}
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{remark}
+        With generalized eigenspace decomposition, we can first address the case of each specific generalized eigenspace, or the case of a nilpotent, as shown in the second point in \hyperref[8.13]{Proposition 8.13}, and then extend it to all operators in the complex vector space. We will see some applications in the next subsection.
+    \end{remark}
+    \hfill
+
+    \subsection{Consequences of Generalized Eigenspace Decomposition}
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ is nilpotent. Then $I+T$ has a square root.
+    \end{prop}
+    \begin{remark}
+        Consider the first $\dim V$ terms of the talor expansion of $\sqrt{1+x}$ gives 
+        $$
+        I+\frac{1}{2}T-\frac{1}{8}T^2+\cdots+aT^{\dim V-1}
+        $$
+        is a square root of $I+T$ since its square equals
+        $$
+        I+T+T^{\dim V}(\cdots)=I+T
+        $$
+    \end{remark}
+    \begin{prop}
+        Suppose $\F=\C$ and $T\in\lmap{V}$ is invertible. Then $T$ has a square root.   
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Jordan basis}
+        Suppose $T\in\lmap{V}$. A basis of $V$ is called a Jordan basis for $T$ if with respect to this basis $T$ has a block diagonal matrix
+        $$
+        \begin{pmatrix}
+            A_1 & & 0\\
+             &\ddots& \\
+             0 & & A_p
+        \end{pmatrix}
+        $$
+        in which each $A_k$ is an upper-triangular matrix of the form
+        $$
+        \begin{pmatrix}
+            \lambda_k & 1 & & 0\\
+             &\ddots&\ddots& \\
+             & &\ddots& 1 \\
+             0 & & & \lambda_k
+        \end{pmatrix}
+        $$
+    \end{defi}
+    \begin{remark}
+        Note that $\lambda_k$ need not be distinct.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ is nilpotent. Then there is a basis of $V$ that is a Jordan basis for $T$.
+    \end{prop}
+    \begin{thm}
+        \textbf{Jordan Form}
+
+        Suppose $\F=\C$ and $T\in\lmap{V}$. Then there is a basis of $V$ that is a Jordan basis for $T$.
+    \end{thm}
+    \hfill
+
+    \subsection{Trace: A Connection Between Matrices and Operators}
+    \begin{defi}{Trace of a matrix}\addelement{$\tr$}
+        Suppose $A$ is a square matrix with entries in $\F$. The trace of $A$, denoted by $\tr A$, is defined to be the sum of the diagonal entries of $A$.
+    \end{defi}
+    \hfill
+    
+    \begin{prop}
+        Suppose $A$ is an \by{n}{m} matrix and $B$ is an \by{m}{n} matrix. Then
+        $$
+        \tr(AB)=\tr(BA)
+        $$
+    \end{prop} 
+    \hfill
+
+    \begin{prop}
+         Suppose $T\in\lmap{V}$. Suppose also $v_1,\dots,v_n$ and $u_1,\dots,u_n$ are bases of $V$, then
+         $$
+         \tr\lmat{T,(v_1,\dots,v_n)}=\tr\lmat{T,(u_1,\dots,u_n)}
+         $$
+    \end{prop}
+    \begin{remark}
+        This shows that the trace of a matrix of an operator does not depend on basis.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Trace of an operator}
+        Suppose $T\in\lmap{V}$. Then the trace of $T$, denoted $\tr T$, is defined by
+        $$
+        \tr T=\tr\lmat{T,(v_1,\dots,v_n)}
+        $$
+        where $v_1,\dots,v_n$ is any basis of $V$.
+    \end{defi}
+    \begin{remark}
+        Suppose $\F=\C$ and $T\in\lmap{V}$, suppose also that $\lambda_1,\dots,\lambda_m$ are distinct eigenvalues of $T$, with multiplicities $d_1,\dots,d_m$. Then we can intentionally take a basis of $V$ such that $\lmat{V}$ is a upper-triangular matrix, and then by \hyperref[8.19]{Proposition 8.19}, we have
+        $$
+        \tr T=d_1\lambda_1+\cdots+d_m\lambda_m
+        $$
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $\F=\C$ and $T\in\lmap{V}$. Then $\tr T$ equals the negative of the coefficient of $z^{\dim V-1}$ in the characteristic polynomial of $T$.
+    \end{prop}
+    \hfill
+    
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ and $e_1,\dots,e_n$ is an orthonormal basis of $V$. Then
+        $$
+        \tr T=\iprod{Te_1,e_1}+\cdots+\iprod{Te_n,e_n}
+        $$
+    \end{prop}
+    \begin{remark}
+        Notice that $\lmat{T,(e_1,\dots,e_n)}_{k,k}=\iprod{Te_k,e_k}$ by the first point of \hyperref[6.19]{Proposition 6.19}.
+    \end{remark}
+    \hfill
+    
+    \begin{prop}
+        The function $\tr:\lmap{V}\to\F$ is a linear functional on $\lmap{V}$.
+    \end{prop}
+    \begin{cor}
+        There do not exist $S,T\in\lmap{V}$ such that $ST-TS=I$.
+    \end{cor}
+    \begin{remark}
+        Note that $\tr I=\dim V$.
+    \end{remark}
+    \hfill
+    
+    \section{Multilinear Algebra and Determinants}\addclass{Multilinear Algebra and Determinants}
+    \subsection{Bilinear Forms and Quadratic Forms}
+    \begin{defi}{Bilinear Form}
+        A bilinear form on $V$ is a function $\beta:V\times V\to\F$ such that
+        $$
+        v\mapsto\beta(v,u)\quad\text{and}\quad v\mapsto\beta(u,v)
+        $$
+        are both linear functionals on $V$ for all fixed $u\in V$.
+    \end{defi}
+    \begin{remark}
+        $\iprod{v,v}:V\times V\to\F$ is a bilinear form if $\F=\R$, but fails when $\F=\C$.
+    \end{remark}
+    \hfill
+    
+    \begin{notation}{$V^{(2)}$}
+        The set of bilinear forms on $V$ is denoted by $V^{(2)}$.
+    \end{notation}
+    \hfill
+    
+    \begin{defi}{Matrix of a bilinear form}\addelement{$\lmat{\beta}$}
+        Suppose $\beta\in V^{(2)}$ and $v_1,\dots,v_n$ is a basis of $V$. Then the matrix of $\beta$ with respect to this basis is the \by{n}{n} matrix $\lmat{\beta}$ defined by
+        $$
+        \lmat{\beta}_{i,j}=\beta(v_i,v_j)
+        $$
+    \end{defi}
+    \hfill
+    
+    \begin{prop}
+        Suppose $\beta\in V^{(2)}$, then $\beta\mapsto\lmat{\beta}$ is an isomorphism of $V^{(2)}$ onto $\F^{n,n}$.
+    \end{prop}
+    \begin{remark}
+        As a result, we have 
+        $$
+        \dim V^{(2)}=(\dim V)^2
+        $$
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $\beta\in V^{(2)}$ and $T\in\lmap{V}$. Defined $\alpha,\rho\in V^{(2)}$ by
+        $$
+        \alpha(u,v)=\beta(u,Tv)\quad\text{and}\quad\rho(u,v)=\beta(Tu,v)
+        $$
+        Then
+        $$
+        \lmat{\alpha}=\lmat{\beta}\lmat{T}\quad\text{and}\quad\lmat{\rho}=\trans{\lmat{T}}\lmat{\beta}
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $\beta\in V^{(2)}$. Suppose also that $e_1,\dots,e_n$ and $f_1,\dots,f_n$ are bases of $V$. Let
+        $$
+        A=\lmat{\beta,(e_1,\dots,e_n)}\quad\text{and}\quad B=\lmat{\beta,(f_1,\dots,f_n)}
+        $$
+        Suppose $C=\lmat{I,(e_1,\dots,e_n),(f_1,\dots,f_n)}$, then
+        $$
+        A=\trans{C}BC
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Symmetric bilinear form}
+        A bilinear form $\rho\in\bil{V}$ is called symmetric if
+        $$
+        \rho(u,w)=\rho(w,u)
+        $$
+        for all $u,v\in V$.
+    \end{defi}
+    \begin{notation}{$\symbil{V}$}
+        The set of all symmetric bilinear form on $V$ is denoted $\symbil{V}$.
+    \end{notation}
+    \hfill
+
+    \begin{defi}{Symmetric matrix}
+        A sqaure matrix $A$ is called symmetric if $A=\trans{A}$.
+    \end{defi}
+    \hfill
+
+    \begin{prop}\label{9.10}
+        Suppose $\rho\in\bil{V}$. Then the following are equivalent.
+        \begin{itemize}
+            \item $\rho$ is symmetric.
+            \item $\lmat{\rho,(e_1,\dots,e_n)}$ is a symmetric matrix for every basis $e_1,\dots,e_n$ of $V$.
+            \item $\lmat{\rho,(e_1,\dots,e_n)}$ is a symmetric matrix for some basis $e_1,\dots,e_n$ of $V$.
+            \item $\lmat{\rho,(e_1,\dots,e_n)}$ is a diagonal matrix for some basis $e_1,\dots,e_n$ of $V$.
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{prop}\label{9.11}
+        Suppose $V$ is a real inner product space and $\rho$ is a symmetric biliear form on $V$. Then $\rho$ has a diagonal matrix with respect to some orthonormal basis of $V$.
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Alternating bilinear form}
+        A bilinear form $\alpha\in\bil{V}$ is called alternating if
+        $$
+        \alpha(v,v)=0
+        $$
+        for all $v\in\lmap{V}$.
+    \end{defi}
+    \begin{notation}{$\altbil{V}$}
+        The set of alternating bilinear forms on $V$ is denoted by $\altbil{V}$.
+    \end{notation}
+    \hfill
+
+    
+    \begin{prop}
+        A bilinear form $\alpha$ on $V$ is alternating iff 
+        $$
+        \alpha(u,w)=-\alpha(w,u)
+        $$
+        for all $u,w\in V$.
+    \end{prop}
+    \begin{remark}
+        Consider $0=\alpha(u+w,u+w)=\alpha(u,w)+\alpha(w,u)$.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        $\symbil{V}$ and $\altbil{V}$ are subspaces of $\bil{V}$. Furthermore,
+        $$
+        \bil{V}=\symbil{V}\oplus\altbil{V}
+        $$
+    \end{prop}
+    \begin{remark}
+        Consider
+        $$
+        \alpha(u,w)=\frac{\alpha(u,w)+\alpha(w,u)}{2}+\frac{\alpha(u,w)-\alpha(w,u)}{2}
+        $$
+        where
+        $$
+        \frac{\alpha(u,w)+\alpha(w,u)}{2}\in\symbil{V}\quad\text{and}\quad\frac{\alpha(u,w)-\alpha(w,u)}{2}\in\altbil{V}
+        $$
+    \end{remark}
+    \begin{remark}
+        The above definitions and results are rather analogous to even functions and odd functions:
+        \begin{itemize}
+            \item Even functions defined by $f(x)=f(-x)$ compared with symmetric bilinear form defined by $\rho(u,w)=\rho(w,u)$
+            \item Odd functions defined by $f(x)=-f(-x)$ compared with alternating bilinear form where $\alpha(u,w)=-\alpha(w,u)$ holds.
+            \item Similarly, every function can be written as the sum of an odd function and an even function by considering
+            $$
+            f(x)=\frac{f(x)+f(-x)}{2}+\frac{f(x)-f(-x)}{2}
+            $$
+        \end{itemize}
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Quadratic form}\addelement{$q_\beta$}
+        For a bilinear form $\beta\in\bil{V}$, the quadratic form associated with it, denoted $q_\beta:V\to\F$, is defined by
+        $$
+        q_{\beta}(v)=\beta(v,v)
+        $$
+        for all $v\in V$.
+
+        A function $q:V\to\F$ is a quadratic form on $V$ if there exist $\beta\in\bil{V}$ such that $q=q_\beta$. 
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        Suppose $n\in\Z^+$ and $q:\F^n\to\F$. Then $q$ is a quadratic form on $\F^n$ iff there exist $A_{i,j}\in\F$ for all $i,j\in\set{1,\dots,n}$ such that
+        $$
+        q(x_1,\dots,x_n)=\sum_{j=1}^n\sum_{i=1}^n A_{i,j}x_ix_j
+        $$
+        for all $(x_1,\dots,x_n)\in\F^n$.
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $q:V\to\F$ is a function. Then the following are equivalent.
+        \begin{itemize}
+            \item $q$ is a quadratic form.
+            \item There exists a unique symmetric bilinear form $\rho $ on $V$ such that $q=q_\rho$.
+            \item $q(\lambda v)=\lambda^2q(v)$ for all $\lambda\in\F$ and all $v\in V$, and the function
+            $$
+            (u,w)\mapsto q(u+w)-q(u)-q(w)
+            $$
+            is a symmetric bilinear form on $V$.
+            \item $q(2v)=4q(v)$ for all $v\in V$, and the function
+            $$
+            (u,w)\mapsto q(u+w)-q(u)-q(w)
+            $$
+            is a symmetric bilinear form on $V$.
+        \end{itemize}
+    \end{prop}
+    \begin{remark}
+        The second point reveals that for a quadratic form $q=q_\beta$, we have 
+        $$
+        \set{\alpha\mid q=q_\alpha}=\set{\beta+\theta\,\middle|\,\theta\in\altbil{V}}
+        $$
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $q$ is a quadratic form on $V$, then there exist a basis $e_1,\dots,e_n$ and $\lambda_1,\dots,\lambda_n\in\F$ such that
+        $$
+        q(x_1e_1+\dots,x_ne_n)=\lambda_1x_1^2+\dots+\lambda_nx_n^2
+        $$
+        for all $x_1,\dots,x_n\in\F$.
+        
+        Furthermore, $e_1,\dots,e_n$ can be an orthonormal basis if $\F=\R$. 
+    \end{prop}
+    \begin{remark}
+        We can consider the symmetric bilinear form $\rho$ of $q$. Then the proposition is directly proved by the last point of \hyperref[9.10]{Proposition 9.10} and \hyperref[9.11]{Proposition 9.11}.
+    \end{remark}
+    \hfill
+
+    \subsection{Alternating Multilinear Forms}
+    \begin{defi}{$m$-linear form}
+        For $m\in\Z^+$, a $m$-linear form on $V$ is a function $\beta:V^m\to\F$ that is linear in each slot when other slots are held fixed. In other words, for all $k\in\set{1,\dots,m}$ and all $u_1,\dots,u_m\in V$. The function
+        $$
+        v\mapsto\beta(u_1,\dots,u_{k-1},v,u_{k+1},\dots,u_m)
+        $$
+        is a linear functional from $V$ to $\F$.
+    \end{defi}
+    \begin{notation}{$V^{(m)}$}
+        The set of $m$-linear forms on $V$ is denoted by $V^{(m)}$.
+    \end{notation}
+    \begin{defi}{Multilinear form}
+        A function $\beta$ is a multilinear form if it is an $m$-linear form on $V$ for some $m\in\Z^+$.
+    \end{defi}
+    \begin{defi}{Alternating multilinear forms}\label{9.23}
+        Suppose $m\in\Z^+$, then an $m$-linear form $\alpha$ on $V$ is called alternating if
+        $$
+        \exists i\neq j(v_i=v_j)\implies\alpha(v_1,\dots,v_m)=0
+        $$
+    \end{defi}
+    \begin{notation}{$V_{\mathrm{alt}}^{(m)}$}
+        The set of alternating $m$-linear forms on $V$ is denoted by $V_{\mathrm{alt}}^{(m)}$.
+    \end{notation}
+    \hfill
+
+    \begin{prop}
+        Suppose $m\in\Z^+$ and $\alpha\in V_{\mathrm{alt}}^{(m)}$. If $v_1,\dots,v_m$ is linearly dependent, then
+        $$
+        \alpha(v_1,\dots,v_m)=0
+        $$
+    \end{prop}
+    \begin{cor}
+        Suppose $m>\dim V$. Then $V_{\mathrm{alt}}^{(m)}=\set{0}$.
+    \end{cor}
+    \hfill
+
+    \begin{defi}{Permutation}
+        Suppose $m\in\Z^+$, then a permutation of $(1,\dots,m)$ is a list $(a_1,\dots,a_m)$ that contains each of the numbers $1,\dots,m$ exactly once.
+    \end{defi}
+    \begin{notation}{$\perm m$}
+        The set of all permutations of $(1,\dots,m)$ is denoted by $\perm m$
+    \end{notation}
+    \begin{defi}{Sign of a permutation}
+        The sign of a permutation $(a_1,\dots,a_m)$ is defined by
+        $$
+        \sign(a_1,\dots,a_m)=(-1)^N
+        $$
+        where $N$ is the number of pairs of integers $(k,l)$ with $1\leq k<l\leq m$ such that $k$ appears after $l$ in the list $(a_1,\dots,a_m)$.
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        Swapping two entries in a permutation multiplies the sign of the permutation by $-1$.
+    \end{prop}
+    \begin{prop}
+        Suppose $m\in\Z^+$ and $\alpha\in V_{\mathrm{alt}}^{(m)}$, then
+        $$
+        \alpha(v_{a_1},\dots,v_{a_m})=\sign(a_1,\dots,a_m)\alpha(v_1,\dots,v_m)
+        $$
+        for all list $v_1,\dots,v_m$ of vectors in $V$ and all $(a_1,\dots,a_m)\in\perm m$.
+    \end{prop}
+    \hfill
+
+    \begin{prop}\label{9.32}
+        Suppose $\dim V=n$, $\alpha\in V_{\mathrm{alt}}^{(n)}$, $e_1,\dots,e_n$ is a basis of $V$ and $v_1,\dots,v_n\in V$. For each $k\in\set{1,\dots,n}$, let $b_{1,k},\dots,b_{n,k}\in\F$ be such that 
+        $$
+        v_k=\sum_{i=1}^nb_{i,k}e_i
+        $$
+        Then we have
+        $$
+        \alpha(v_1,\dots,v_n)=\alpha(e_1,\dots,e_n)\cdot\left(\sum_{(i_1,\dots,i_n)\in\perm n}\sign(i_1,\dots,i_n)b_{i_1,1}\cdots b_{i_n,n}\right)
+        $$
+    \end{prop}
+    \begin{remark}
+        Consider the expansion of
+        $$
+        (b_{1,1}e_1+\cdots+b_{n,1}e_n)\cdots(b_{1,n}e_1+\cdots b_{n,n}e_n)
+        $$
+        where the terms with a power of $e_i$ greater than $1$ is removed (by \hyperref[9.23]{Definition 9.23}).
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        $$
+        \dim V_{\mathrm{alt}}^{(\dim V)}=1
+        $$
+    \end{prop}
+    \begin{remark}
+        We can show from \hyperref[9.32]{Proposition 9.32} that $\alpha'=c\alpha$ for any $\alpha,\alpha'\in V_{\mathrm{alt}}^{(\dim V)}$.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $\dim V=n$, $\alpha$ is a nonzero alternating $n$-linear form on $V$ and $e_1,\dots,e_n$ is a list of vectors in $V$. Then 
+        $$
+        \alpha(e_1,\dots,e_n)\neq0\iff e_1,\dots,e_n\text{ is linearly independent}
+        $$
+    \end{prop}
+    \begin{remark}
+        Note that $e_1,\dots,e_n$ is linear independent is equivalent to $e_1,\dots,e_n$ is a basis of $V$.
+    \end{remark}
+    \hfill
+
+    \subsection{Determinants}
+    \begin{defi}{$\alpha_{T}$}
+        Suppose $m\in\Z^+$ and $T\in\lmap{V}$. For $\alpha\in\altmul{V}{m}$, define $\alpha_{T}\in\altmul{V}{m}$ by
+        $$
+        \alpha_{T}(v_1,\dots,v_m)=\alpha(Tv_1,\dots,Tv_m)
+        $$
+        for each list $v_1,\dots,v_n$ of vectors in $V$.
+    \end{defi}
+    \begin{defi}{Determinant of an operator}\addelement{$\det T$}
+        Suppose $T\in\lmap{V}$. Then the determinant of $T$, denoted by $\det T$, is defined by
+        $$
+        \det T=\frac{\alpha_{T}}{\alpha}
+        $$
+        for all $\alpha\in\altmul{V}{\dim V}$.
+    \end{defi}
+    \begin{remark}\label{9.36r}
+        To prove that $\det T$ is well-defined, i.e. the uniqueness of $\frac{\alpha_T}{\alpha}$, we notice that as expressed in \hyperref[9.32]{Proposition 9.32}, $\frac{\alpha'}{\alpha}$ is independent of $\alpha$, only the relationship between variables matters.
+
+        In other words, if we have $Te_i=\sum_{j=1}^nA_{i,j}e_j$ for each $i\in\set{1,\dots,n}$, then
+        $$
+        \det T=\frac{\alpha_{T}}{\alpha}=\sum_{(j_{1},\dots,j_{n})\in\perm n}\sign(j_{1},\dots,j_{n})A_{j_{1},1}\cdots A_{j_{n},n}
+        $$
+    \end{remark}
+    \begin{eg}
+        Let $n=\dim V$, then
+        \begin{itemize}
+            \item $\det I=1$
+            \item $\det(\lambda T)=\lambda^n\det T$
+            \item Suppose $T\in\lmap{V}$ and there is a basis $e_1,\dots,e_n$ of $V$ consisting of eigenvectors of $T$, with corresponding eigenvalues $\lambda_1,\dots,\lambda_n$. Then 
+            $$
+            \det T=\lambda_1\cdots\lambda_n
+            $$
+        \end{itemize}
+    \end{eg}
+    \hfill
+
+    \begin{defi}{Determinant of a matrix}\addelement{$\det A$}
+        Suppose that $A$ is a \by{n}{n} square matrix with entries in $\F$. Let $T\in\lmap{\F^n}$ be the operator whose matrix with respect to the standard basis of $\F^n$ equals $A$. Then the determinant of $A$, denoted by $\det A$, is defined by $\det A=\det T$.
+    \end{defi}
+    \begin{remark}
+        Note that we now have $Te_i=\sum_{j=1}^nA_{i,j}e_j$ for each $i\in\set{1,\dots,n}$, where $e_1,\dots,e_n$ is the standard basis. Hence by \hyperref[9.36r]{Remark in Definition 9.36}, we have
+        $$
+        \det A=\det T=\sum_{(j_{1},\dots,j_{n})\in\perm n}\sign(j_{1},\dots,j_{n})A_{j_{1},1}\cdots A_{j_{n},n}
+        $$
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $v_1,\dots,v_n\in\F^n$, then the function $\alpha:(\F^{n})^n\to\F$
+        $$
+        \alpha(v_1,\dots,v_n)=\det \begin{pmatrix}&&\\v_1&\dots&v_n\\&&\end{pmatrix}
+        $$
+        is an alternating $n$-linear form on $\F^n$.
+    \end{prop}
+    \begin{remark}
+        The operator correspond to the matrix $\begin{pmatrix}&&\\v_1&\dots&v_n\\&&\end{pmatrix}$ is $Te_k=v_k$.
+    \end{remark}
+    \hfill
+
+    \begin{eg}
+        Suppose that $A$ is an upper-triangular matrix with $\lambda_1,\dots,\lambda_n$ on the diagonal, then 
+        $$
+        \det A=\lambda_1\cdots\lambda_n
+        $$
+    \end{eg}
+    \hfill
+
+    \begin{prop}
+        Suppose $S,T\in\lmap{V}$. Then $\det(ST)=(\det S)(\det T)$.
+    \end{prop}
+    \begin{remark}
+        This shows that determinant is multiplicative.
+    \end{remark}
+    \begin{cor}
+        An operator $T\in\lmap{V}$ is invertible iff $\det T\neq0$. Furthermore, if $T$ is invertible, then $\det T^{-1}=\frac{1}{\det T}$.
+    \end{cor}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ and $\lambda\in\F$. Then $\lambda$ is an eigenvalue of $T$ iff $\det(\lambda I-T)=0$.
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ and $S:W\to V$ is an invertible linear map. Then
+        $$
+        \det(S^{-1}TS)=\det(T)
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $\F=\C$ and $T\in\lmap{V}$. Suppose also that the eigenvalues of $T$ is $\lambda_1,\dots,\lambda_m$, with multiplicities $d_1,\dots,d_m$. Then
+        $$
+        \det T=\lambda_1^{d_1}\cdots\lambda_m^{d_m}
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        \hfill
+        
+        \begin{itemize}
+            \item Suppose $A$ is a square matrix. Then $\det\trans{A}=\det A$.
+            \item Suppose $T\in\lmap{V}$. Then $\det T'=\det T$.
+            \item Suppose $T\in\lmap{V}$. Then $\det(T^*)=\overline{\det T}$.
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        \hfill
+
+        \begin{itemize}
+            \item If either two columns or two rows of a square matrix are equal, then the determinant of the matrix equals $0$.
+            \item Suppose $A$ is a square matrix and $B$ is the matrix obtained from $A$ by swapping either two columns or two rows. Then $\det A=-\det B$.
+            \item If one column or one row of a square matrix is multiplied by a scalar, then the value of the determinant is multiplied by the same scalar.
+            \item If a scalar multiple of one column of a square matrix to added to another column, then the value of the determinant is unchanged.
+            \item If a scalar multiple of one row of a square matrix to added to another row, then the value of the determinant is unchanged.
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $S\in\lmap{V}$ is a unitary operator. Then $\abs{\det S}=1$.
+    \end{prop}
+    \begin{remark}
+        Note that $SS^*=I$ as proved in \hyperref[7.30]{Proposition 7.30}.
+    \end{remark}
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ is a positive operator. Then $\det T\geq0$.
+    \end{prop}
+    \begin{remark}
+        Note that all eigenvalues of $T$ is nonnegative by \hyperref[7.24]{Proposition 7.24} and that $T$ is diagonalizable by \hyperref[7.19]{Spectral theorem}.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V}$. Then
+        $$
+        \abs{\det T}=\text{product of singular values of }T
+        $$
+    \end{prop}
+    \begin{remark}
+        Note that $\det T=\sqrt{\det T^*T}$ and that the eigenvalues of $T^*T$ are $s_1^2,\dots,s_n^2$.
+    \end{remark}
+    \hfill
+    
+    \begin{prop}
+        Suppose $\F=\C$ and $T\in\lmap{V}$. Suppose also that $\lambda_1,\dots,\lambda_m$ are distinct eigenvalues of $T$, with multiplicities $d_1,\dots,d_m$. Then
+        $$
+        \det(zI-T)=(z-\lambda_1)^{d_1}\cdots(z-\lambda_m)^{d_m}
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Characteristic polynomial}
+        Suppose $T\in\lmap{V}$. Then the characteristic polynomial is defined by
+        $$
+        p(z)=\det(zI-T)
+        $$
+    \end{defi}
+    \begin{thm}
+        \textbf{Cayley-Hamilton Theorem}
+
+        Suppose $T\in\lmap{V}$ and $q$ is the characteristic polynomial of $T$, then $q(T)=0$.
+    \end{thm}
+    \hfill
+
+    \begin{prop}
+        Suppose $T\in\lmap{V}$ and $\dim V=n$. Then the characteristic polynomial of $T$ can be written as
+        $$
+        z^n-(\tr T)z^{n-1}+\cdots+(-1)^n(\det T)
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        \textbf{Hadamard’s inequality}
+        
+        Suppose $A$ is an \by{n}{n} matrix. Let $v_1,\dots,v_n$ denote the columns of $A$. Then
+        $$
+        \abs{\det A}\leq\prod_{k=1}^n\norm{v_k}
+        $$
+    \end{prop}
+    \begin{remark}
+        The equality holds iff the columns of $A$ are pairwise orthogonal.
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $n>1$ and $\beta_1,\dots,\beta_n\in\F$. Then
+        $$
+        \det
+        \begin{pmatrix}
+            1 & \beta_1 & \beta_1^2 & \cdots & \beta_1^{n-1}\\[0.3em]
+            1 & \beta_2 & \beta_2^2 & \cdots & \beta_2^{n-1}\\[0.3em]
+              &         & \vdots    &        &              \\[0.3em]
+            1 & \beta_n & \beta_n^2 & \cdots & \beta_n^{n-1}\\
+        \end{pmatrix}
+        =\prod_{1\leq i<j\leq n}(\beta_j-\beta_i)
+        $$
+    \end{prop}
+    \begin{remark}
+        The matrix in this proposition is called \textbf{Vandermonde matrix}.
+    \end{remark}
+    \hfill
+
+    \subsection{Tensor Products}
+    \begin{defi}{Bilinear functional}
+        A bilinear functional on $V\times W$ is a function $\beta:V\times W\to \F$ such that $v\mapsto\beta(v,w)$ is a linear functional on $V$ for each $w\in W$ and that $w\mapsto\beta(v,w)$ is also a linear functional on $W$ for each $v\in V$.
+    \end{defi}        
+    \begin{remark}
+        Note that if $V=W$, then $\beta$ is a linear form.
+    \end{remark}
+    \begin{notation}{$\bmap{V,W}$}
+        The vector space of bilinear functionals on $V\times W$ is denoted by $\bmap{V,W}$.
+    \end{notation}
+    \hfill
+
+    \begin{prop}
+        $$
+        \dim\bmap{V,W}=(\dim V)(\dim W)
+        $$
+    \end{prop}
+    \begin{remark}
+        $\bmap{V,W}$ can be regarded as $\lmap{V,\lmap{W,\F}}$.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Tensor product}\addelement{$V\otimes W$}\addelement{$v\otimes w$}
+        \begin{itemize}
+            \item The tensor product $V\otimes W$ is defined to be $\bmap{V',W'}$.
+            \item For $v\in V$ and $w\in W$, the tensor product $v\otimes w\in V\otimes W$ is defined by
+            $$
+            (v\otimes w)(\varphi,\tau)=\varphi(v)\tau(w)
+            $$
+            for all $(\varphi,\tau)\in V'\times W'$.
+        \end{itemize}
+    \end{defi}
+    \begin{prop}
+        $$
+        \dim(V\otimes W)=(\dim V)(\dim W)
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $v,v_1,v_2\in V$ and $w,w_1,w_2\in W$ and $\lambda\in\F$. Then
+        $$
+        (v_1+v_2)\otimes w=v_1\otimes w+v_2\otimes w
+        $$
+        and
+        $$
+        v\otimes(w_1+w_2)=v\otimes w_1+v\otimes w_2
+        $$
+        and
+        $$
+        \lambda(v\otimes w)=(\lambda v)\otimes w=v\otimes(\lambda w)
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $e_1,\dots,e_m$ and $f_1,\dots,f_n$ are linearly independent lists of vectors in $V$ and $W$ respectively. Then
+        $$
+        \set{e_i\otimes f_j\mid i\in\set{1,\dots,m},j\in\set{1,\dots,n}}
+        $$
+        is a linearly independent list in $V\otimes W$.
+
+        Furthermore, if $e_1,\dots,e_m$ and $f_1,\dots,f_n$ are bases of $V$ and $W$, then
+        $$
+        \set{e_i\otimes f_j\mid i\in\set{1,\dots,m},j\in\set{1,\dots,n}}
+        $$
+        is a basis of $V\otimes W$.
+    \end{prop}
+    \begin{remark}
+        If $\set{e_i\otimes f_j\mid i\in\set{1,\dots,m},j\in\set{1,\dots,n}}$ is linearly dependent, then there exists $A_{i,j}\in\F$ such that for all $\varphi\in V'$ and $\tau\in W'$, 
+        $$
+        \sum_{i=1}^m\sum_{j=1}^nA_{i,j}\varphi(e_i)\tau(f_j)=\sum_{i=1}^m(\sum_{j=1}^nA_{i,j}\tau(f_j))\varphi(e_i)=0
+        $$
+        which means either $\varphi(e_i)$ or $\tau(f_j)$ is a linearly dependent list.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{Bilinear map}
+        A bilinear map from $V\times W$ to a vector space $U$ is a function $\Gamma:V\times W\to U$ such that $v\mapsto\Gamma(v,w)$ is a linear map from $V$ to $U$ for each $w\in W$ and $w\mapsto\Gamma(v,w)$ is a linear map from $W$ to $U$ for each $v\in V$.
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        Suppose $U$ is a vector space, then
+        \begin{itemize}
+            \item Suppose $\Gamma:V\times W\to U$ is a bilinear map. Then there exists a unique linear map $\hat{\Gamma}=V\otimes W\to U$ such that
+            $$
+            \hat{\Gamma}(v\otimes w)=\Gamma(v,w)
+            $$
+            for all $(v,w)\in V\times W$.
+            \item Suppose $T:V\otimes W\to U$ is a linear map. Then there exists a unique bilinear map $T^\#:V\times W\to U$ such that
+            $$
+            T^\#(v,w)=T(v\otimes w)
+            $$
+            for all $(v,w)\in V\times W$.
+        \end{itemize}
+    \end{prop}
+    \hfill
+       
+    \begin{prop}
+        Suppose $V$ and $W$ are inner product spaces. Then there is a unique inner product on $V\otimes W$ such that
+        $$
+        \iprod{v\otimes w,u\otimes x}=\iprod{v,u}\iprod{w,x}
+        $$
+        for all $v,u\in V$ and $w,x\in W$.
+    \end{prop}
+    \begin{defi}{Inner product on tensor product}
+        Suppose $V$ and $W$ are inner product spaces. The inner product on $V\otimes W$ is the unique function $\iprod{\cdot,\cdot}:(V\otimes W)\times(V\otimes W)\to\F$ such that
+        $$
+        \iprod{v\otimes w,u\otimes x}=\iprod{v,u}\iprod{w,x}
+        $$
+        for all $v,u\in V$ and $w,x\in W$.
+    \end{defi}
+    \begin{remark}
+        Note if $e_1,\dots,e_m$ is an orthonormal basis in $V$ and $f_1,\dots,f_n$ is an orthonormal basis in $W$, then the inner product is defined by
+        $$
+        \iprod{\sum_{k=1}^n\sum_{j=1}^mb_{j,k}e_{j}\otimes f_{k},\sum_{k=1}^n\sum_{j=1}^mc_{j,k}e_{j}\otimes f_{k}}=\sum_{k=1}^n\sum_{j=1}^mb_{j,k}\overline{c_{j,k}}
+        $$
+    \end{remark}
+    \begin{remark}
+        Consider the last point in \hyperref[6.19]{Proposition 6.19}.
+    \end{remark}
+    \begin{remark}
+        This shows that
+        $$
+        \norm{v\otimes w}=\norm{v}\times\norm{w}
+        $$
+    \end{remark}
+    \hfill
+
+    \begin{prop}
+        Suppose $V$ and $W$ are inner product spaces, and $e_1,\dots,e_m$ is an orthonormal basis of $V$ and $f_1,\dots,f_n$ is an orthonormal basis of $W$, then
+        $$
+        \set{e_i\otimes f_j\mid i\in\set{1,\dots,m},j\in\set{1,\dots,n}}
+        $$
+        is an orthonormal basis of $V\otimes W$.
+    \end{prop}
+    \hfill
+
+    \begin{remark}
+        The following definitions and propositions are purely generalization of the previous results.
+    \end{remark}
+    \hfill
+
+    \begin{defi}{$m$-linear functional}
+        An $m$-linear functional on $V_1\times\cdots\times V_m$ is a function $\beta:V_1\times\cdots\times V_m\to\F$ that is a linear functional in each slot when the other slots are fixed.
+    \end{defi}
+    \begin{notation}{$B(V_1,\dots,V_m)$}
+        We use $B(V_1,\dots,V_m)$ to denote the vector space of $m$-linear functionals on $V_1\times\cdots\times V_m$. 
+    \end{notation}
+    \hfill
+
+    \begin{prop}
+        $$
+        \dim \bmap{V_1,\dots V_m}=(\dim V_1)\times\cdots\times(\dim V_m)
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Generalized tensor product}\addelement{$V_1\otimes\cdots\otimes V_m$}\addelement{$v_1\otimes\cdots\otimes v_m$}
+        \begin{itemize}
+            \item The tensor product $V_1\otimes\cdots\otimes V_m$ is defined to be $\bmap{V_1',\cdots,V_m'}$.
+            \item For $v_1\in V_1,\dots,v_m\in V_m$, the tensor product $v_1\otimes\cdots\otimes v_m\in V_1\otimes\cdots\otimes V_m$ is defined by
+            $$
+            (v_1\otimes\cdots\otimes v_m)(\varphi_1,\dots,\varphi_m)=\varphi_1(v_1)\cdots\varphi_m(v_m)
+            $$
+            for all $(\varphi_1,\dots,\varphi_m)\in V_1'\times\cdots\times V_m'$.
+        \end{itemize}
+    \end{defi}
+    \hfill
+
+    \begin{prop}
+        $$
+        \dim(V_1\otimes\cdots\otimes V_m)=(\dim V_1)\cdots(\dim V_m)
+        $$
+    \end{prop}
+    \hfill
+
+    \begin{prop}
+        Suppose $\dim V_k=n_k$ and $e_{k,1},\cdots,e_{k,n_k}$ is a basis of $V_k$ for each $k\in\set{1,\dots,m}$, then
+        $$
+        \set{e_{1,j_1}\otimes\cdots\otimes e_{m,j_m}\mid j_{i}\in\set{1,\dots,n_i}}
+        $$
+        is a basis of $V_1\otimes\cdots\otimes V_m$.
+    \end{prop}
+    \hfill
+
+    \begin{defi}{$m$-linear map}
+        An $m$-linear map from $V_1\times\cdots\times V_m$ to a vector space $U$ is a function $\Gamma:V_1\times\cdots\times V_m\to U$ that is a linear map in each slot when the other slots are fixed.
+    \end{defi}
+    \begin{prop}
+        Suppose $U$ is a vector space, then
+        \begin{itemize}
+            \item Suppose $\Gamma:V_1\times\cdots\times V_m\to U$ is an $m$-linear map. Then there exists a unique linear map $\hat{\Gamma}:V_1\otimes\cdots\otimes V_m\to U$ such that
+            $$
+            \hat{\Gamma}(v_1\otimes\cdots\otimes v_m)=\Gamma(v_1,\dots,v_m)
+            $$
+            for all $(v_1,\dots,v_m)\in V_1\times\cdots\times V_m$
+            \item Suppose $T:V_1\otimes\cdots\otimes V_m\to U$ is a linear map. Then there exists a unique $m$-linear map $T^\#:V_1\times\cdots\times V_m\to U$ such that
+            $$
+            T^\#(v_1,\dots,v_m)=T(v_1\otimes\cdots\otimes v_m)
+            $$
+            for all $(v_1,\dots,v_m)\in V_1\times\cdots\times V_m$
+        \end{itemize}
+    \end{prop}
+    \hfill
+
+    \begin{defi}{Inner product on generalized tensor product}
+        Suppose $V_1,\dots,V_m$ are finite-dimensional inner product spaces. Then the inner product on $V_1\otimes\cdots\otimes V_m$ is the unique function $\iprod{\cdot,\cdot}:(V_1\otimes\cdots\otimes V_m)^2\to\F$ such that
+        $$
+        \iprod{v_1\otimes\cdots\otimes v_m,u_1\otimes\cdots\otimes u_m}=\iprod{v_1,u_1}\cdots\iprod{v_m,u_m}
+        $$
+        for all $(v_1,\dots,v_m),(u_1,\dots,u_m)\in V_1\times\cdots\times V_m$
+    \end{defi}
+    \begin{cor}
+        $$
+        \norm{v_1\otimes\cdots\otimes v_m}=\norm{v_1}\times\cdots\times\norm{v_m}
+        $$
+    \end{cor}
+    \hfill
+
+    \begin{prop}
+        Suppose $V_1,\dots,V_m$ are inner product spaces with $e_{i,1},\dots,e_{i,n_{i}}$ being orthonormal basis of $V_i$. Then
+        $$
+        \set{e_{1,j_1}\otimes\cdots\otimes e_{m,j_m}\mid j_i\in\set{1,\dots,n_i}}
+        $$
+        is an orthonormal basis of $V_1\otimes\cdots\otimes V_m$.
+    \end{prop}
+
+
+    
+    \printglossary
+\end{document}
